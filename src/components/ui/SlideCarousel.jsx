@@ -31,7 +31,7 @@ export default function SlideCarousel({ chapter, total }) {
     return String(n).padStart(2, '0');
   }
 
-  const src = `/slides/ch${chapter}/slide-${pad(current)}.png`;
+  const src = `${import.meta.env.BASE_URL}slides/ch${chapter}/slide-${pad(current)}.png`;
 
   return (
     <div className="slide-carousel">
@@ -84,7 +84,7 @@ export default function SlideCarousel({ chapter, total }) {
             aria-label={`Folie ${n}`}
           >
             <img
-              src={`/slides/ch${chapter}/slide-${pad(n)}.png`}
+              src={`${import.meta.env.BASE_URL}slides/ch${chapter}/slide-${pad(n)}.png`}
               alt={`Folie ${n}`}
               loading="lazy"
             />
