@@ -1,0 +1,40 @@
+.page-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  gap: 12px;
+}
+
+.page-nav__btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: var(--text);
+  font-size: .9rem;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-nav__btn:hover:not(:disabled) {
+  border-color: var(--react);
+  color: var(--react);
+}
+
+.page-nav__btn:disabled {
+  opacity: .3;
+  cursor: not-allowed;
+}
+
+.page-nav__btn--primary {
+  background: rgba(97, 218, 251, .1);
+  border-color: var(--react);
+  color: var(--react);
+}
+
+.page-nav__btn--primary:hover:not(:disabled) {
+  background: rgba(97, 218, 251, .2);
+}

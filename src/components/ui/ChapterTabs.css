@@ -1,0 +1,52 @@
+/* ─── ChapterTabs ─────────────────────────────────────────── */
+
+.chapter-tabs {
+  width: 100%;
+}
+
+/* ── Tab bar ── */
+.tabs-nav {
+  display: flex;
+  gap: 2px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 32px;
+  padding: 0 2px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  padding: 12px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: var(--radius) var(--radius) 0 0;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text);
+  background: var(--bg2);
+}
+
+.tab-btn.active {
+  color: var(--react);
+  border-bottom-color: var(--react);
+  background: transparent;
+}
+
+/* ── Panel ── */
+.tab-panel {
+  animation: tabFadeIn 0.18s ease;
+}
+
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

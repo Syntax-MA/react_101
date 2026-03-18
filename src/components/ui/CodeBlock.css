@@ -1,0 +1,50 @@
+.code-block {
+  background: #010409;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.code-header {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  padding: 9px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.code-filename {
+  font-size: .78rem;
+  color: var(--muted);
+  font-family: monospace;
+}
+
+.code-lang {
+  background: rgba(97, 218, 251, .15);
+  color: var(--react);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: .72rem;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.code-block pre {
+  padding: 18px;
+  overflow-x: auto;
+  font-size: .83rem;
+  line-height: 1.7;
+  font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+  color: var(--text);
+}
+
+/* ── Syntax-Farben (als CSS-Klassen nutzbar) ── */
+.kw  { color: #ff7b72; }
+.fn  { color: #d2a8ff; }
+.str { color: #a5d6ff; }
+.jsx { color: #7ee787; }
+.cmt { color: #8b949e; font-style: italic; }
+.var { color: #ffa657; }
+.num { color: #79c0ff; }

@@ -1,0 +1,42 @@
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.card:hover {
+  border-color: rgba(97, 218, 251, .3);
+  box-shadow: 0 0 0 1px rgba(97, 218, 251, .1), 0 4px 24px rgba(0, 0, 0, .4);
+}
+
+.card-icon {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.card-body {
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+.card-body ul { padding-left: 18px; }
+.card-body li { margin-bottom: 4px; }
+
+.card-body code {
+  background: var(--bg3);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: monospace;
+  font-size: .85em;
+  color: var(--orange);
+}

@@ -1,0 +1,157 @@
+/* ══════════════════════════════════════════
+   CSS VARIABLES & GLOBAL STYLES
+   React Kurs App
+══════════════════════════════════════════ */
+:root {
+  --react: #61DAFB;
+  --react-d: #21a1c4;
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --green: #3fb950;
+  --yellow: #d29922;
+  --purple: #bc8cff;
+  --orange: #ffa657;
+  --red: #f85149;
+  --radius: 10px;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── LAYOUT ── */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  margin-left: 230px;
+  flex: 1;
+  min-height: 100vh;
+}
+
+.page-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+/* ── GRID HELPERS ── */
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+
+/* ── DIVIDER ── */
+hr.div { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* ── SECTION TITLE ── */
+h3.section-title {
+  color: var(--text);
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+}
+
+/* ── BLOCKQUOTE ── */
+blockquote {
+  background: var(--bg3);
+  border-left: 3px solid var(--purple);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 16px 0;
+  color: var(--muted);
+  font-size: .88rem;
+  font-style: italic;
+}
+blockquote cite {
+  display: block;
+  margin-top: 5px;
+  color: var(--purple);
+  font-style: normal;
+  font-size: .78rem;
+  font-weight: 600;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: linear-gradient(135deg, var(--bg2), #0e1f2e);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 20% 50%, rgba(97,218,251,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-header .chapter-tag {
+  display: inline-block;
+  background: rgba(97,218,251,.15);
+  color: var(--react);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 12px;
+}
+.page-header h1 { font-size: 1.8rem; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.page-header p { color: var(--muted); font-size: .95rem; }
+
+/* ── TABLE ── */
+.tbl { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.tbl th {
+  background: var(--bg3);
+  color: var(--muted);
+  text-align: left;
+  padding: 9px 12px;
+  font-weight: 600;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.tbl td { padding: 9px 12px; border-top: 1px solid var(--border); color: var(--muted); }
+.tbl tr:hover td { background: rgba(255,255,255,.02); }
+.tbl .fname { font-family: monospace; font-size: .83em; color: var(--orange); }
+
+/* ── Knowledge-Check placeholder ── */
+.check-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+.check-note {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--react);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 520px;
+  text-align: center;
+  line-height: 1.7;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .main-content { margin-left: 0; }
+  .page-inner { padding: 20px 16px 60px; }
+}

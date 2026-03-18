@@ -1,0 +1,199 @@
+/* ─── MarkdownViewer ───────────────────────────────────────── */
+
+.md-viewer {
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 0.97rem;
+  max-width: 820px;
+}
+
+/* Headings */
+.md-viewer .md-h1,
+.md-viewer .md-h2 {
+  color: var(--react);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.35rem;
+}
+
+.md-viewer .md-h1 { font-size: 1.65rem; }
+.md-viewer .md-h2 { font-size: 1.3rem; }
+
+.md-viewer .md-h3 {
+  font-size: 1.1rem;
+  color: var(--yellow);
+  margin-top: 1.6rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.md-viewer .md-h4,
+.md-viewer .md-h5,
+.md-viewer .md-h6 {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-top: 1.2rem;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+/* Paragraphs */
+.md-viewer .md-p {
+  margin: 0.65rem 0;
+}
+
+/* Code – inline */
+.md-viewer .md-inline-code {
+  background: var(--bg3);
+  color: var(--orange);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono, 'Fira Code', monospace);
+  font-size: 0.875em;
+  border: 1px solid var(--border);
+}
+
+/* Code – fenced block */
+.md-viewer .md-code-block {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-family: var(--font-mono, 'Fira Code', monospace);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--text);
+  white-space: pre;
+}
+
+.md-viewer .md-code-block code {
+  background: none;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+}
+
+/* Blockquote */
+.md-viewer .md-blockquote {
+  border-left: 4px solid var(--react);
+  background: rgba(97,218,251,0.05);
+  margin: 1rem 0;
+  padding: 10px 18px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Table */
+.md-viewer .md-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.9rem;
+}
+
+.md-viewer .md-table th,
+.md-viewer .md-table td {
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  text-align: left;
+}
+
+.md-viewer .md-table th {
+  background: var(--bg3);
+  color: var(--react);
+  font-weight: 600;
+}
+
+.md-viewer .md-table tr:nth-child(even) td {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Lists */
+.md-viewer .md-ul,
+.md-viewer .md-ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.md-viewer .md-ul li,
+.md-viewer .md-ol li {
+  margin: 0.3rem 0;
+}
+
+/* Checklist */
+.md-viewer .md-checklist {
+  list-style: none;
+  padding-left: 0.25rem;
+  margin: 0.5rem 0;
+}
+
+.md-viewer .md-checklist .md-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0.4rem 0;
+}
+
+.md-viewer .md-checklist input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: var(--green);
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+/* HR */
+.md-viewer .md-hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* Details / summary */
+.md-viewer details {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin: 0.75rem 0;
+}
+
+.md-viewer summary {
+  cursor: pointer;
+  color: var(--react);
+  font-weight: 600;
+  user-select: none;
+}
+
+.md-viewer summary:hover {
+  color: #fff;
+}
+
+/* Links */
+.md-viewer a {
+  color: var(--react);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.md-viewer a:hover {
+  opacity: 0.8;
+}
+
+/* Images */
+.md-viewer .md-img {
+  max-width: 100%;
+  border-radius: var(--radius);
+  margin: 0.5rem 0;
+}
+
+/* Strong */
+.md-viewer strong {
+  color: #e2e8f0;
+  font-weight: 600;
+}
