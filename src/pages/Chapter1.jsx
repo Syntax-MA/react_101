@@ -8,6 +8,7 @@ import MarkdownViewer from '../components/ui/MarkdownViewer';
 import FillExercise    from '../components/interactive/FillExercise';
 import DragDropExercise from '../components/interactive/DragDropExercise';
 import CodeLab        from '../components/interactive/CodeLab';
+import Quiz           from '../components/interactive/Quiz';
 import { quizData }    from '../data/quizData';
 import { labChapter1 } from '../data/labData';
 import { fillChapter1, dragDropChapter1 } from '../data/exerciseData';
