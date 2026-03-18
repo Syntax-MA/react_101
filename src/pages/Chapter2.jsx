@@ -8,9 +8,10 @@ import SlideCarousel      from '../components/ui/SlideCarousel';
 import MarkdownViewer     from '../components/ui/MarkdownViewer';
 import Quiz               from '../components/interactive/Quiz';
 import DragDropExercise   from '../components/interactive/DragDropExercise';
+import FillExercise    from '../components/interactive/FillExercise';
 import CodeLab            from '../components/interactive/CodeLab';
 import { quizData }       from '../data/quizData';
-import { dragDropChapter2 } from '../data/exerciseData';
+import { fillChapter2, dragDropChapter2 } from '../data/exerciseData';
 import { labChapter2 }   from '../data/labData';
 import ch2Md from '../data/md/uebung-ch2.md?raw';
 
@@ -122,8 +123,9 @@ export default function Chapter2({ onPrev, onNext }) {
 
         /* ── 3. Knowledge Check ────────────────────────────── */
         checkContent={<>
-          <Quiz questions={quizData.chapter2} />
+          <FillExercise data={fillChapter2} />
           <DragDropExercise data={dragDropChapter2} />
+          <Quiz questions={quizData.chapter2} />
         </>}
 
         /* ── 4. Lab ────────────────────────────────────────── */

@@ -779,7 +779,6 @@ export default Alert;
 .alert-success { background: #d4edda; color: #155724; }
 .alert-warning { background: #fff3cd; color: #856404; }
 .alert-error { background: #f8d7da; color: #721c24; }
-
 ```
 
 <details>
@@ -1029,6 +1028,7 @@ function App() {
 ```
 
 > **Hinweis zum `key` Prop:** Bei Listen braucht React einen eindeutigen `key` für jedes Element, um effizient updaten zu können. Nutze immer eine stabile ID (hier `user.id`). Index als Key (`key={index}`) nur bei statischen Listen verwenden, die sich nie ändern!
+```
 
 3. Füge CSS hinzu:
 

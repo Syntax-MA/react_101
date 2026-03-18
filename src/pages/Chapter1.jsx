@@ -5,11 +5,15 @@ import PageNav        from '../components/ui/PageNav';
 import ChapterTabs    from '../components/ui/ChapterTabs';
 import SlideCarousel  from '../components/ui/SlideCarousel';
 import MarkdownViewer from '../components/ui/MarkdownViewer';
+import FillExercise    from '../components/interactive/FillExercise';
+import DragDropExercise from '../components/interactive/DragDropExercise';
 import CodeLab        from '../components/interactive/CodeLab';
+import { quizData }    from '../data/quizData';
 import { labChapter1 } from '../data/labData';
+import { fillChapter1, dragDropChapter1 } from '../data/exerciseData';
 import ch1Md from '../data/md/uebung-ch1.md?raw';
 
-export default function Chapter1({ onNext }) {
+export default function Chapter1({ onPrev, onNext }) {
   return (
     <div className="page-inner">
       <div className="page-header">
@@ -126,15 +130,11 @@ export default function Chapter1({ onNext }) {
         </>}
 
         /* ── 3. Knowledge Check ────────────────────────────── */
-        checkContent={
-          <div className="check-empty">
-            <p className="check-note">
-              🧠 Der Knowledge Check startet ab <strong>Kapitel 24.2</strong> —
-              sobald die Grundkonzepte von Komponenten &amp; Props bekannt sind,
-              gibt es hier Quiz &amp; Übungen.
-            </p>
-          </div>
-        }
+                checkContent={<>
+          <FillExercise data={fillChapter1} />
+          <DragDropExercise data={dragDropChapter1} />
+          <Quiz questions={quizData.chapter1} />
+        </>}
 
         /* ── 4. Lab ────────────────────────────────────────── */
         labContent={
@@ -156,7 +156,9 @@ export default function Chapter1({ onNext }) {
       />
 
       <PageNav
+        prevLabel="← 23.5 JavaScript Mini-App"
         nextLabel="Weiter: Komponenten & Props →"
+        onPrev={onPrev}
         onNext={onNext}
       />
     </div>

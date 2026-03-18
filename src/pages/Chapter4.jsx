@@ -8,13 +8,14 @@ import SlideCarousel      from '../components/ui/SlideCarousel';
 import MarkdownViewer     from '../components/ui/MarkdownViewer';
 import Quiz               from '../components/interactive/Quiz';
 import DragDropExercise   from '../components/interactive/DragDropExercise';
+import FillExercise    from '../components/interactive/FillExercise';
 import CodeLab            from '../components/interactive/CodeLab';
 import { quizData }       from '../data/quizData';
-import { dragDropChapter4 } from '../data/exerciseData';
+import { fillChapter4, dragDropChapter4 } from '../data/exerciseData';
 import { labChapter4 }   from '../data/labData';
 import ch4Md from '../data/md/uebung-ch4.md?raw';
 
-export default function Chapter4({ onPrev, onFinish }) {
+export default function Chapter4({ onPrev, onNext }) {
   return (
     <div className="page-inner">
       <div className="page-header">
@@ -115,9 +116,10 @@ export default function Chapter4({ onPrev, onFinish }) {
         </>}
 
         /* ── 3. Knowledge Check ────────────────────────────── */
-        checkContent={<>
-          <Quiz questions={quizData.chapter4} />
+                checkContent={<>
+          <FillExercise data={fillChapter4} />
           <DragDropExercise data={dragDropChapter4} />
+          <Quiz questions={quizData.chapter4} />
         </>}
 
         /* ── 4. Lab ────────────────────────────────────────── */
@@ -141,9 +143,9 @@ export default function Chapter4({ onPrev, onFinish }) {
 
       <PageNav
         prevLabel="← 24.3 useState"
-        nextLabel="🎉 Kurs abschließen"
+        nextLabel="Weiter: React Mini-App →"
         onPrev={onPrev}
-        onNext={onFinish}
+        onNext={onNext}
       />
     </div>
   );

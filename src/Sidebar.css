@@ -98,6 +98,27 @@
   font-weight: 700;
 }
 
+/* ── Sections ── */
+.sidebar__section {
+  margin-bottom: 4px;
+}
+
+.sidebar__section-label {
+  display: block;
+  padding: 8px 18px 4px;
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.sidebar__btn--done .sidebar__num {
+  background: rgba(74, 222, 128, .15);
+  color: var(--green);
+}
+
 /* ── Fortschritt ── */
 .sidebar__progress {
   padding: 16px 18px;
