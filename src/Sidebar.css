@@ -18,6 +18,18 @@
   gap: 12px;
 }
 
+.sidebar__logo--btn {
+  cursor: pointer;
+  transition: background .2s;
+  border-radius: 0;
+}
+.sidebar__logo--btn:hover {
+  background: rgba(97,218,251,.05);
+}
+.sidebar__logo--btn:hover .sidebar__sub {
+  color: var(--react);
+}
+
 .sidebar__react-logo {
   width: 32px;
   height: 32px;

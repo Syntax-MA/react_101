@@ -43,11 +43,11 @@ const SECTIONS = [
  *   progressPct  – Fortschritt in % (number)
  *   onNavigate   – Callback(chapterId) beim Klick
  */
-export default function Sidebar({ current, done, totalDone, progressPct, onNavigate }) {
+export default function Sidebar({ current, done, totalDone, progressPct, onNavigate, onDashboard }) {
   return (
     <aside className="sidebar">
-      {/* Logo */}
-      <div className="sidebar__logo">
+      {/* Logo – klickbar → zurück zum Dashboard */}
+      <div className="sidebar__logo sidebar__logo--btn" onClick={onDashboard} title="Zurück zum Dashboard">
         <svg className="sidebar__react-logo" viewBox="0 0 100 100" fill="none">
           <ellipse cx="50" cy="50" rx="47" ry="18" stroke="#61DAFB" strokeWidth="4"/>
           <ellipse cx="50" cy="50" rx="47" ry="18" stroke="#61DAFB" strokeWidth="4" transform="rotate(60 50 50)"/>
@@ -56,7 +56,7 @@ export default function Sidebar({ current, done, totalDone, progressPct, onNavig
         </svg>
         <div>
           <span className="sidebar__title">Web &amp; React</span>
-          <small className="sidebar__sub">Woche 1–3 · Kursübersicht</small>
+          <small className="sidebar__sub">← Dashboard</small>
         </div>
       </div>
 

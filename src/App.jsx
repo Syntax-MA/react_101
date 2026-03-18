@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 
 import Sidebar    from './Sidebar';
+import Dashboard  from './pages/Dashboard';
 import Chapter1   from './pages/Chapter1';
 import Chapter2   from './pages/Chapter2';
 import Chapter3   from './pages/Chapter3';
@@ -29,7 +30,8 @@ const TOTAL = 15;
  *        10=Ch1, 11=Ch2, 12=Ch3, 13=Ch4, 14=Ch10
  */
 export default function App() {
-  const [current, setCurrent] = useState(0);
+  // null = Dashboard anzeigen, Zahl = Kapitel anzeigen
+  const [current, setCurrent] = useState(null);
   const { done, markDone, totalDone, progressPct } = useProgress(TOTAL);
 
   function goTo(n) {
@@ -37,14 +39,21 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function goToDashboard() {
+    setCurrent(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function completeAndNext(n) {
     markDone(n);
     if (n < TOTAL - 1) goTo(n + 1);
+    else goToDashboard();
   }
 
   function handleFinish() {
     markDone(TOTAL - 1);
     alert('🎉 Glückwunsch! Du hast alle 15 Kapitel abgeschlossen!');
+    goToDashboard();
   }
 
   const pages = [
@@ -127,6 +136,18 @@ export default function App() {
     />,
   ];
 
+  // Dashboard-Ansicht (kein Sidebar)
+  if (current === null) {
+    return (
+      <Dashboard
+        done={done}
+        totalDone={totalDone}
+        progressPct={progressPct}
+        onNavigate={goTo}
+      />
+    );
+  }
+
   return (
     <div className="app-layout">
       <Sidebar
@@ -135,6 +156,7 @@ export default function App() {
         totalDone={totalDone}
         progressPct={progressPct}
         onNavigate={goTo}
+        onDashboard={goToDashboard}
       />
       <main className="main-content">
         {pages[current]}
