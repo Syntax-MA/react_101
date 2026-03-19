@@ -9,8 +9,10 @@ import SlideCarousel  from '../components/ui/SlideCarousel';
 import FillExercise    from '../components/interactive/FillExercise';
 import DragDropExercise from '../components/interactive/DragDropExercise';
 import CodeLab        from '../components/interactive/CodeLab';
+import BugFinder      from '../components/interactive/BugFinder';
 import Quiz           from '../components/interactive/Quiz';
 import { labChapter11 } from '../data/labData';
+import { bugChapter9 }   from '../data/bugData';
 import { quizData }     from '../data/quizData';
 import { fillChapter11, dragDropChapter11 } from '../data/exerciseData';
 import ch11Md from '../data/md/uebung-ch11.md?raw';
@@ -138,6 +140,8 @@ export default function Chapter11({ onPrev, onNext }) {
           </TaskBox>
           <MarkdownViewer content={ch11Md} />
         </>}
+
+        bugsContent={<BugFinder data={bugChapter9} />}
       />
 
       <PageNav

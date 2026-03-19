@@ -620,3 +620,440 @@ export const bugChapter8 = {
     },
   ],
 };
+
+/* ══════════════════════════════════════════════════════════════
+   22.1 – Webarchitektur & HTTP
+══════════════════════════════════════════════════════════════ */
+export const bugChapter9 = {
+  title: '22.1 · Webarchitektur & HTTP',
+  exercises: [
+    {
+      id: 1,
+      title: 'Falscher HTTP-Method für Formular',
+      category: 'html',
+      description:
+        'Dieses Formular soll Login-Daten sicher ans Backend schicken. ' +
+        'Mit der aktuellen Methode landen Passwörter aber in der URL! Fix?',
+      buggyCode:
+`<form action="/login" method="get">
+  <label for="email">E-Mail:</label>
+  <input type="email" id="email" name="email">
+
+  <label for="password">Passwort:</label>
+  <input type="password" id="password" name="password">
+
+  <button type="submit">Einloggen</button>
+</form>`,
+      hint: 'Formulare mit sensiblen Daten sollen POST verwenden, nicht GET.',
+      explanation:
+        'GET hängt alle Formularfelder als Query-String an die URL an – Passwörter wären im Browser-Verlauf und Server-Log sichtbar. Für Login-Formulare immer method="post" verwenden.',
+      tests: [
+        { label: 'method="post" vorhanden', check: c => /method\s*=\s*["']post["']/i.test(c) },
+        { label: 'Kein method="get" mehr', check: c => !/method\s*=\s*["']get["']/i.test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Fehlendes alt-Attribut',
+      category: 'html',
+      description:
+        'Das Profilbild wird geladen, aber Screen-Reader und langsame Verbindungen ' +
+        'bekommen keinen alternativen Text. Was fehlt?',
+      buggyCode:
+`<div class="profile">
+  <img src="/images/avatar.jpg" class="avatar">
+  <h2>Max Mustermann</h2>
+  <p>Web-Entwickler aus München</p>
+</div>`,
+      hint: 'Jedes <img>-Element braucht ein alt-Attribut für Barrierefreiheit.',
+      explanation:
+        'Das alt-Attribut ist Pflicht für Barrierefreiheit (WCAG) und wird angezeigt wenn das Bild nicht lädt. Füge alt="Profilbild von Max Mustermann" (oder ähnlich) hinzu.',
+      tests: [
+        { label: 'alt-Attribut vorhanden', check: c => /alt\s*=\s*["'][^"']+["']/.test(c) },
+        { label: 'alt ist nicht leer', check: c => !/alt\s*=\s*["']\s*["']/.test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Falsche URL-Konstruktion',
+      category: 'js',
+      description:
+        'Die Funktion soll eine API-URL zusammenbauen, aber der Endpunkt ist falsch – ' +
+        'es fehlt ein Trennzeichen. Was ist das Problem?',
+      buggyCode:
+`const BASE_URL = 'https://api.example.com';
+
+function getUserUrl(userId) {
+  return BASE_URL + 'users/' + userId;
+}
+
+console.log(getUserUrl(42));
+// Ergibt: "https://api.example.comusers/42"`,
+      hint: 'Zwischen BASE_URL und dem Pfad fehlt ein "/".',
+      explanation:
+        'BASE_URL endet ohne "/" und "users/" fängt ohne "/" an – zusammengeklebt ergibt das einen ungültigen Pfad. Fix: BASE_URL + "/users/" + userId, oder noch besser als Template-Literal: `${BASE_URL}/users/${userId}`.',
+      tests: [
+        { label: 'Trennzeichen "/" vorhanden', check: c => /BASE_URL\s*\+\s*['"`]\/|`\$\{BASE_URL\}\//.test(c) },
+        { label: 'Kein direktes Zusammenkleben ohne "/"', check: c => !/BASE_URL\s*\+\s*['"`]users/.test(c) },
+      ],
+    },
+  ],
+};
+
+/* ══════════════════════════════════════════════════════════════
+   22.2 – HTML: Struktur, Semantik & Formulare
+══════════════════════════════════════════════════════════════ */
+export const bugChapter10 = {
+  title: '22.2 · HTML: Struktur, Semantik & Formulare',
+  exercises: [
+    {
+      id: 1,
+      title: 'Nicht-semantisches Layout',
+      category: 'html',
+      description:
+        'Die Navigationsleiste wird mit einem generischen <code>&lt;div&gt;</code> gebaut. ' +
+        'Screenreader und Suchmaschinen erkennen sie nicht als Navigation. Welches semantische Element soll hier stehen?',
+      buggyCode:
+`<div class="navigation">
+  <a href="/">Start</a>
+  <a href="/ueber-uns">Über uns</a>
+  <a href="/kontakt">Kontakt</a>
+</div>
+
+<div class="main-content">
+  <h1>Willkommen!</h1>
+</div>`,
+      hint: 'HTML5 hat spezielle Elemente für Navigation und Hauptinhalt.',
+      explanation:
+        'Verwende <nav> für die Navigationsleiste und <main> für den Hauptinhalt. Diese semantischen Elemente helfen Screen-Readern und verbessern das SEO.',
+      tests: [
+        { label: '<nav> statt <div class="navigation">', check: c => /<nav[\s>]/.test(c) },
+        { label: '<main> statt <div class="main-content">', check: c => /<main[\s>]/.test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Fehlende label-Verknüpfung',
+      category: 'html',
+      description:
+        'Das Formular hat Labels, aber Klicks auf den Label-Text fokussieren das Inputfeld nicht. ' +
+        'Außerdem können Screen-Reader das Label nicht dem Input zuordnen. Was fehlt?',
+      buggyCode:
+`<form>
+  <label>Name</label>
+  <input type="text" name="name" placeholder="Dein Name">
+
+  <label>E-Mail</label>
+  <input type="email" name="email" placeholder="deine@email.de">
+
+  <button type="submit">Absenden</button>
+</form>`,
+      hint: 'Labels müssen über for/id oder durch Verschachtelung mit dem Input verknüpft sein.',
+      explanation:
+        'Jedes <label> braucht ein for-Attribut, dessen Wert mit der id des dazugehörigen Inputs übereinstimmt: <label for="name">Name</label> <input id="name" ...>. Alternativ: Input in das Label verschachteln.',
+      tests: [
+        { label: 'for-Attribut im Label vorhanden', check: c => /for\s*=\s*["'][^"']+["']/.test(c) },
+        { label: 'id-Attribut im Input vorhanden', check: c => /id\s*=\s*["'][^"']+["']/.test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Unclosed Tag verursacht Layout-Bruch',
+      category: 'html',
+      description:
+        'Die Produktkarte sieht im Browser komplett falsch aus – Inhalt läuft aus dem Container heraus. ' +
+        'Findest du den Fehler in der HTML-Struktur?',
+      buggyCode:
+`<div class="card">
+  <img src="produkt.jpg" alt="Produktbild">
+  <div class="card-body">
+    <h3>Produkt A</h3>
+    <p>Hochwertiger Artikel für den täglichen Einsatz.
+    <span class="price">€ 29,99</span>
+  </div>
+  <button>In den Warenkorb</button>
+</div>`,
+      hint: 'Schau dir die <p>-Zeile genau an.',
+      explanation:
+        'Das <p>-Element wird nie geschlossen. Der Browser interpretiert dann alles Folgende als Inhalt des Paragraphen – einschließlich des <span> und des </div>. Fix: </p> nach dem Text einfügen.',
+      tests: [
+        { label: '</p> vorhanden', check: c => /<\/p>/.test(c) },
+        { label: 'Tag-Reihenfolge korrekt', check: c => c.indexOf('</p>') < c.indexOf('</div>') },
+      ],
+    },
+  ],
+};
+
+/* ══════════════════════════════════════════════════════════════
+   22.3 – CSS Grundlagen: Styling, Selektoren & Debugging
+══════════════════════════════════════════════════════════════ */
+export const bugChapter11 = {
+  title: '22.3 · CSS Grundlagen: Selektoren & Debugging',
+  exercises: [
+    {
+      id: 1,
+      title: 'Falscher Selektor: Klasse vs. ID',
+      category: 'css',
+      description:
+        'Der Button soll blau werden, aber das CSS greift nicht. ' +
+        'Im HTML steht <code>&lt;button class="btn-primary"&gt;</code>. Was stimmt am Selektor nicht?',
+      buggyCode:
+`#btn-primary {
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}`,
+      hint: '#-Selektor ist für IDs, .-Selektor für Klassen.',
+      explanation:
+        'Im HTML wird class="btn-primary" verwendet – das ist eine Klasse. Der CSS-Selektor muss deshalb .btn-primary lauten (mit Punkt), nicht #btn-primary (mit Raute, das wäre eine ID).',
+      tests: [
+        { label: '.btn-primary verwendet (Klassen-Selektor)', check: c => /\.btn-primary/.test(c) },
+        { label: '#btn-primary entfernt', check: c => !/#btn-primary/.test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Fehlende Einheit bei CSS-Wert',
+      category: 'css',
+      description:
+        'Die Box soll 200px breit sein, aber im Browser hat sie Breite 0. ' +
+        'Was ist falsch an der width-Deklaration?',
+      buggyCode:
+`.box {
+  width: 200;
+  height: 150px;
+  background-color: #e2e8f0;
+  border: 1px solid #cbd5e1;
+}`,
+      hint: 'CSS-Längenangaben brauchen immer eine Einheit – außer bei Wert 0.',
+      explanation:
+        'width: 200 ist eine ungültige CSS-Deklaration – ohne Einheit wird sie ignoriert. Korrekt: width: 200px, width: 200%, oder width: 12.5rem etc. Nur bei Wert 0 darf die Einheit fehlen.',
+      tests: [
+        { label: 'width hat eine Einheit', check: c => /width\s*:\s*\d+(\.\d+)?(px|rem|em|%|vw)/.test(c) },
+        { label: 'Kein "width: 200;" ohne Einheit', check: c => !/width\s*:\s*200\s*;/.test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Spezifitäts-Konflikt',
+      category: 'css',
+      description:
+        'Der Text im Paragraph soll rot sein, aber er bleibt schwarz. ' +
+        'Das allgemeine <code>p</code>-Styling überschreibt die spezifische Regel nicht – oder umgekehrt? Finde das Problem.',
+      buggyCode:
+`p {
+  color: red;
+}
+
+#content .article p {
+  color: black;
+}
+
+/* Dieser Paragraph soll rot sein: */
+/* <div id="content"><div class="article"><p>Text</p></div></div> */`,
+      hint: 'Welche Regel hat höhere Spezifität? ID + Klasse + Element schlägt immer ein einzelnes Element.',
+      explanation:
+        '#content .article p hat Spezifität (1,1,1) – sehr hoch durch die ID. Die Regel color:red mit nur p hat (0,0,1) und verliert. Lösungen: die spezifischere Regel für red verwenden, oder !important (als letztes Mittel), oder die Struktur anpassen.',
+      tests: [
+        { label: 'Spezifischere Regel für rot', check: c => /#content.*color\s*:\s*red|\.article.*color\s*:\s*red|p.*color\s*:\s*red\s*!important/.test(c) },
+        { label: 'color: red vorhanden', check: c => /color\s*:\s*red/.test(c) },
+      ],
+    },
+  ],
+};
+
+/* ══════════════════════════════════════════════════════════════
+   22.4 – CSS Layout & Responsive Design
+══════════════════════════════════════════════════════════════ */
+export const bugChapter12 = {
+  title: '22.4 · CSS Layout & Responsive Design',
+  exercises: [
+    {
+      id: 1,
+      title: 'Falsche Flex-Richtung',
+      category: 'css',
+      description:
+        'Die Navigations-Links sollen nebeneinander stehen, aber sie werden untereinander angezeigt. ' +
+        'Was fehlt oder ist falsch?',
+      buggyCode:
+`.navbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px 24px;
+  background: #1e293b;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+}`,
+      hint: 'flex-direction bestimmt die Hauptachse. "row" = waagerecht, "column" = senkrecht.',
+      explanation:
+        'flex-direction: column stapelt die Elemente untereinander. Für nebeneinander muss es flex-direction: row heißen (das ist auch der Standardwert – die Zeile kann auch ganz weggelassen werden).',
+      tests: [
+        { label: 'flex-direction: row oder kein column', check: c => /flex-direction\s*:\s*row/.test(c) || !/flex-direction\s*:\s*column/.test(c) },
+        { label: 'display: flex vorhanden', check: c => /display\s*:\s*flex/.test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Media Query ohne schließende Klammer',
+      category: 'css',
+      description:
+        'Ab 768px soll das Layout zweispaltig werden, aber der Breakpoint greift nie. ' +
+        'Schau dir die Media Query Syntax genau an.',
+      buggyCode:
+`/* Mobile: einspaltig */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Ab 768px: zweispaltig */
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+/* fehlende schließende Klammer! */`,
+      hint: 'Eine @media-Regel braucht zwei schließende geschweifte Klammern.',
+      explanation:
+        'Der @media-Block schließt nie – die innere Regel } schließt .grid, aber der @media-Block selbst braucht eine weitere } am Ende. Ohne sie ist der CSS-Block syntaktisch falsch und wird vom Browser ignoriert.',
+      tests: [
+        { label: 'Zwei schließende } am Ende', check: c => {
+          const closing = (c.match(/}/g) || []).length;
+          const opening = (c.match(/{/g) || []).length;
+          return opening === closing;
+        }},
+        { label: '@media vorhanden', check: c => /@media/.test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'position: absolute ohne positioned Parent',
+      category: 'css',
+      description:
+        'Der Badge soll oben-rechts in der Karte erscheinen, springt aber ans Fenster-Eck. ' +
+        'Was fehlt am Parent-Element?',
+      buggyCode:
+`.card {
+  width: 200px;
+  padding: 16px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #ef4444;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}`,
+      hint: 'position: absolute sucht den nächsten Vorfahren mit einer position-Angabe (nicht static).',
+      explanation:
+        'Absolut positionierte Elemente richten sich am nächsten Vorfahren aus, der position: relative, absolute, fixed oder sticky hat. Da .card kein position hat, springt der Badge ans Viewport-Eck. Fix: position: relative zu .card hinzufügen.',
+      tests: [
+        { label: '.card hat position: relative', check: c => /\.card\s*\{[^}]*position\s*:\s*relative/.test(c) },
+        { label: '.badge hat position: absolute', check: c => /\.badge\s*\{[^}]*position\s*:\s*absolute/.test(c) },
+      ],
+    },
+  ],
+};
+
+/* ══════════════════════════════════════════════════════════════
+   22.5 – Portfolio-Projekt
+══════════════════════════════════════════════════════════════ */
+export const bugChapter13 = {
+  title: '22.5 · Portfolio-Projekt',
+  exercises: [
+    {
+      id: 1,
+      title: 'Viewport Meta-Tag fehlt',
+      category: 'html',
+      description:
+        'Das Portfolio sieht auf dem Desktop super aus, aber auf dem Handy ist alles winzig klein ' +
+        'und die Media Queries greifen nicht. Was fehlt im <code>&lt;head&gt;</code>?',
+      buggyCode:
+`<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Mein Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Hallo, ich bin Max</h1>
+</body>
+</html>`,
+      hint: 'Für Responsive Design braucht jede Seite einen bestimmten Meta-Tag im Head.',
+      explanation:
+        'Ohne <meta name="viewport" content="width=device-width, initial-scale=1.0"> zeigt der mobile Browser die Seite herausgezoomt an (als ob das Display 980px breit wäre). Media Queries richten sich dann nach der falschen Breite. Dieser Tag ist ein Muss für jede responsive Seite.',
+      tests: [
+        { label: 'viewport meta-tag vorhanden', check: c => /name\s*=\s*["']viewport["']/.test(c) },
+        { label: 'width=device-width enthalten', check: c => /width=device-width/.test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'CSS-Variable nicht definiert',
+      category: 'css',
+      description:
+        'Die Primärfarbe soll per CSS-Variable gesetzt werden, aber Buttons bleiben farblos. ' +
+        'Was wurde vergessen?',
+      buggyCode:
+`/* Buttons und Links nutzen die Primärfarbe */
+.btn {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 6px;
+  border: none;
+}
+
+a {
+  color: var(--color-primary);
+}`,
+      hint: 'CSS-Variablen müssen in einem Selektor definiert werden – meistens in :root.',
+      explanation:
+        'var(--color-primary) verweist auf eine Custom Property, die nirgends definiert ist. Deshalb fällt der Browser auf transparent/initial zurück. Füge am Anfang einen :root-Block ein: :root { --color-primary: #3b82f6; }',
+      tests: [
+        { label: ':root Block vorhanden', check: c => /:root\s*\{/.test(c) },
+        { label: '--color-primary definiert', check: c => /--color-primary\s*:/.test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Kontaktformular: action fehlt',
+      category: 'html',
+      description:
+        'Das Kontaktformular sieht gut aus, aber beim Absenden passiert nichts – ' +
+        'die Daten landen nirgends. Was fehlt am Formular-Element?',
+      buggyCode:
+`<form method="post">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" required>
+
+  <label for="msg">Nachricht</label>
+  <textarea id="msg" name="message" rows="5" required></textarea>
+
+  <button type="submit">Senden</button>
+</form>`,
+      hint: 'Formulare brauchen ein Ziel – wohin sollen die Daten geschickt werden?',
+      explanation:
+        'Das action-Attribut fehlt. Ohne action schickt der Browser die Daten an die aktuelle URL – das ist selten gewollt. Für ein Portfolio-Kontaktformular wäre z.B. ein Dienst wie Formspree üblich: action="https://formspree.io/f/deinCode".',
+      tests: [
+        { label: 'action-Attribut vorhanden', check: c => /action\s*=\s*["'][^"']+["']/.test(c) },
+        { label: 'method="post" behalten', check: c => /method\s*=\s*["']post["']/i.test(c) },
+      ],
+    },
+  ],
+};

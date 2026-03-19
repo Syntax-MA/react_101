@@ -7,9 +7,11 @@ import MarkdownViewer from '../components/ui/MarkdownViewer';
 import FillExercise    from '../components/interactive/FillExercise';
 import DragDropExercise from '../components/interactive/DragDropExercise';
 import CodeLab        from '../components/interactive/CodeLab';
+import BugFinder      from '../components/interactive/BugFinder';
 import Quiz           from '../components/interactive/Quiz';
 import { quizData }    from '../data/quizData';
 import { labChapter15 } from '../data/labData';
+import { bugChapter13 }   from '../data/bugData';
 import { fillChapter15, dragDropChapter15 } from '../data/exerciseData';
 import ch15Md from '../data/md/uebung-ch15.md?raw';
 
@@ -228,6 +230,8 @@ export default function Chapter15({ onPrev, onNext }) {
           </TaskBox>
           <MarkdownViewer content={ch15Md} />
         </>}
+
+        bugsContent={<BugFinder data={bugChapter13} />}
       />
 
       <PageNav
