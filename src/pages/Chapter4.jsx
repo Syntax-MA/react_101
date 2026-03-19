@@ -9,10 +9,12 @@ import MarkdownViewer     from '../components/ui/MarkdownViewer';
 import Quiz               from '../components/interactive/Quiz';
 import DragDropExercise   from '../components/interactive/DragDropExercise';
 import FillExercise    from '../components/interactive/FillExercise';
-import CodeLab            from '../components/interactive/CodeLab';
+import CodeLab        from '../components/interactive/CodeLab';
+import BugFinder      from '../components/interactive/BugFinder';
 import { quizData }       from '../data/quizData';
 import { fillChapter4, dragDropChapter4 } from '../data/exerciseData';
 import { labChapter4 }   from '../data/labData';
+import { bugChapter4 }   from '../data/bugData';
 import ch4Md from '../data/md/uebung-ch4.md?raw';
 
 export default function Chapter4({ onPrev, onNext }) {
@@ -124,7 +126,7 @@ export default function Chapter4({ onPrev, onNext }) {
 
         /* ── 4. Lab ────────────────────────────────────────── */
         labContent={
-          <CodeLab data={labChapter4} />
+          <CodeLab data={labChapter4} labId="labChapter4" />
         }
 
         /* ── 5. Übung ──────────────────────────────────────── */
@@ -139,6 +141,8 @@ export default function Chapter4({ onPrev, onNext }) {
           </TaskBox>
           <MarkdownViewer content={ch4Md} />
         </>}
+
+        bugsContent={<BugFinder data={bugChapter4} />}
       />
 
       <PageNav

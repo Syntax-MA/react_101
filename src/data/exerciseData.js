@@ -1045,7 +1045,7 @@ export const fillChapter1 = {
       { type: 'text', value: '}' },
     ],
   ],
-  wordBank: ['React', 'div', 'name', 'className', 'class', 'span', 'return', 'export'],
+  wordBank: ['React', 'div', 'div', 'name', 'className', 'class', 'span', 'return', 'export'],
 };
 
 // ── 24.1 Drag & Drop: Vite Projektstruktur ────────────────

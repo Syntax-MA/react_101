@@ -8,8 +8,10 @@ import MarkdownViewer from '../components/ui/MarkdownViewer';
 import Quiz            from '../components/interactive/Quiz';
 import FillExercise    from '../components/interactive/FillExercise';
 import DragDropExercise from '../components/interactive/DragDropExercise';
-import CodeLab         from '../components/interactive/CodeLab';
-import { labChapter5 } from '../data/labData';
+import CodeLab        from '../components/interactive/CodeLab';
+import BugFinder      from '../components/interactive/BugFinder';
+import { labChapter5 }   from '../data/labData';
+import { bugChapter5 }   from '../data/bugData';
 import { quizData }    from '../data/quizData';
 import { fillChapter5, dragDropChapter5 } from '../data/exerciseData';
 import ch5Md from '../data/md/uebung-ch5.md?raw';
@@ -121,7 +123,7 @@ export default function Chapter5({ onPrev, onNext }) {
             <span className="kw">const</span>{' '}<span className="var">names</span>{' = ['}<span className="str">'Ana'</span>{', '}<span className="str">'Ben'</span>{', '}<span className="str">'Cleo'</span>{'];'}{'\n'}
             <span className="var">names</span>{'.'}<span className="fn">forEach</span>{'(name => '}<span className="fn">console</span>{'.log(name));'}{'\n\n'}
             <span className="cmt">// In React – onClick Callback:</span>{'\n'}
-            <span className="jsx">{'<button'}</span>{' onClick={'}<span className="fn">{'() => setCount'}</span>{'(count + 1)}>'}<span className="jsx">{'</button>'}</span>
+            <span className="jsx">{'<button'}</span>{' onClick={() => setCount(count + 1)>'}<span className="jsx">{'</button>'}</span>
           </CodeBlock>
         </>}
 
@@ -134,7 +136,7 @@ export default function Chapter5({ onPrev, onNext }) {
 
         /* ── 4. Lab ────────────────────────────────────────── */
         labContent={
-          <CodeLab data={labChapter5} />
+          <CodeLab data={labChapter5} labId="labChapter5" />
         }
 
         /* ── 5. Übung ──────────────────────────────────────── */
@@ -151,6 +153,8 @@ export default function Chapter5({ onPrev, onNext }) {
           </TaskBox>
           <MarkdownViewer content={ch5Md} />
         </>}
+
+        bugsContent={<BugFinder data={bugChapter5} />}
       />
 
       <PageNav

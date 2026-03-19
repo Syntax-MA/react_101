@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 
+import { LabProgressProvider } from './context/LabProgressContext';
 import Sidebar    from './Sidebar';
 import Dashboard  from './pages/Dashboard';
 import Chapter1   from './pages/Chapter1';
@@ -29,7 +30,7 @@ const TOTAL = 15;
  *        5=Ch5,  6=Ch8,  7=Ch6,  8=Ch7,  9=Ch9,
  *        10=Ch1, 11=Ch2, 12=Ch3, 13=Ch4, 14=Ch10
  */
-export default function App() {
+function AppInner() {
   // null = Dashboard anzeigen, Zahl = Kapitel anzeigen
   const [current, setCurrent] = useState(null);
   const { done, markDone, totalDone, progressPct } = useProgress(TOTAL);
@@ -162,5 +163,13 @@ export default function App() {
         {pages[current]}
       </main>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LabProgressProvider>
+      <AppInner />
+    </LabProgressProvider>
   );
 }

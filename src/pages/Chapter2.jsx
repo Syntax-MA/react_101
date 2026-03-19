@@ -1,4 +1,6 @@
 import CodeBlock          from '../components/ui/CodeBlock';
+import CodeDiff           from '../components/ui/CodeDiff';
+import GlossarTerm        from '../components/ui/GlossarTerm';
 import Concept            from '../components/ui/Concept';
 import Card               from '../components/ui/Card';
 import TaskBox            from '../components/ui/TaskBox';
@@ -9,10 +11,12 @@ import MarkdownViewer     from '../components/ui/MarkdownViewer';
 import Quiz               from '../components/interactive/Quiz';
 import DragDropExercise   from '../components/interactive/DragDropExercise';
 import FillExercise    from '../components/interactive/FillExercise';
-import CodeLab            from '../components/interactive/CodeLab';
+import CodeLab        from '../components/interactive/CodeLab';
+import BugFinder      from '../components/interactive/BugFinder';
 import { quizData }       from '../data/quizData';
 import { fillChapter2, dragDropChapter2 } from '../data/exerciseData';
 import { labChapter2 }   from '../data/labData';
+import { bugChapter2 }   from '../data/bugData';
 import ch2Md from '../data/md/uebung-ch2.md?raw';
 
 export default function Chapter2({ onPrev, onNext }) {
@@ -112,6 +116,31 @@ export default function Chapter2({ onPrev, onNext }) {
             </p>
           </Concept>
 
+          <hr className="div" />
+          <h3 className="section-title">🔀 Schritt-für-Schritt: Hardcodiert → Mit Props</h3>
+          <p style={{ marginBottom: 8 }}>So macht man eine Komponente mit <GlossarTerm term="Props">Props</GlossarTerm> wiederverwendbar:</p>
+          <CodeDiff
+            filename="Greeting.jsx – hardcodiert → flexibel"
+            before={`function Greeting() {
+  return (
+    <div className="card">
+      <h2>Hallo, Max!</h2>
+      <p>Willkommen zurück.</p>
+    </div>
+  );
+}`}
+            after={`function Greeting({ name, message }) {
+  return (
+    <div className="card">
+      <h2>Hallo, {name}!</h2>
+      <p>{message}</p>
+    </div>
+  );
+}
+// Verwendung:
+// <Greeting name="Anna" message="Schön, dich zu sehen!" />`}
+          />
+
           <CodeBlock filename="Spread Operator bei Props" lang="JSX">
             <span className="kw">const</span>{' '}<span className="var">user</span>{' = { '}<span className="var">name</span>{': '}<span className="str">'Max'</span>{', '}<span className="var">role</span>{': '}<span className="str">'Admin'</span>{' };'}{'\n'}
             <span className="cmt">{'// Ohne Spread:'}</span>{'\n'}
@@ -130,7 +159,7 @@ export default function Chapter2({ onPrev, onNext }) {
 
         /* ── 4. Lab ────────────────────────────────────────── */
         labContent={
-          <CodeLab data={labChapter2} />
+          <CodeLab data={labChapter2} labId="labChapter2" />
         }
 
         /* ── 5. Übung ──────────────────────────────────────── */
@@ -144,6 +173,8 @@ export default function Chapter2({ onPrev, onNext }) {
           </TaskBox>
           <MarkdownViewer content={ch2Md} />
         </>}
+
+        bugsContent={<BugFinder data={bugChapter2} />}
       />
 
       <PageNav

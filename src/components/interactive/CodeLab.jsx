@@ -1,16 +1,20 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { useLabProgress } from '../../context/LabProgressContext';
+import LabProgressBadge from '../ui/LabProgressBadge';
 import './CodeLab.css';
 
 /**
  * CodeLab – FreeCodeCamp-artiges Übungslab
  *
  * Props:
- *   data – { title, exercises[] } aus labData.js
+ *   data  – { title, exercises[] } aus labData.js
+ *   labId – z.B. "labChapter1" (für Fortschritt-Tracking)
  *          exercise: { id, title, description, filename, startCode, hint, tests[] }
  *          test:     { label, check: (code) => boolean }
  */
-export default function CodeLab({ data }) {
+export default function CodeLab({ data, labId }) {
   const { title, exercises } = data;
+  const { markExerciseDone, getLabProgress, progress } = useLabProgress();
 
   const [exIndex, setExIndex]       = useState(0);
   const [code, setCode]             = useState(exercises[0].startCode);
@@ -19,15 +23,57 @@ export default function CodeLab({ data }) {
   const [finished, setFinished]     = useState(false);
   const textareaRef                 = useRef(null);
 
-  const ex      = exercises[exIndex];
-  const total   = exercises.length;
-  const allPass = testResults?.passed;
+  const ex           = exercises[exIndex];
+  const total        = exercises.length;
+  const allPass      = testResults?.passed;
+  const doneIds      = labId ? (progress[labId] || []) : [];
+  const isDone       = (ex) => doneIds.includes(ex.id);
+
+  /* ── Live-Preview: iframe srcdoc (nur bei HTML/CSS) ── */
+  const isHtml = ex.filename?.endsWith('.html');
+  const isCss  = ex.filename?.endsWith('.css');
+  const hasPreview = isHtml || isCss;
+  const [previewSrc, setPreviewSrc] = useState('');
+
+  const buildPreview = useCallback((currentCode) => {
+    if (isHtml) {
+      return currentCode;
+    } else if (isCss) {
+      return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body { font-family: sans-serif; padding: 24px; background: #fff; color: #1e293b; }
+${currentCode}
+</style>
+</head>
+<body>
+  <div class="box">Vorschau-Box</div>
+  <p class="text">Ein Beispiel-Text</p>
+  <button class="btn">Schaltfläche</button>
+  <ul class="liste"><li>Punkt 1</li><li>Punkt 2</li></ul>
+</body>
+</html>`;
+    }
+    return '';
+  }, [isHtml, isCss]);
+
+  // Debounced preview update
+  useEffect(() => {
+    if (!hasPreview) return;
+    const timer = setTimeout(() => {
+      setPreviewSrc(buildPreview(code));
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [code, hasPreview, buildPreview]);
 
   // Code zurücksetzen wenn Aufgabe wechselt
   useEffect(() => {
     setCode(exercises[exIndex].startCode);
     setTestResults(null);
     setShowHint(false);
+    setPreviewSrc('');
     textareaRef.current?.focus();
   }, [exIndex, exercises]);
 
@@ -55,6 +101,8 @@ export default function CodeLab({ data }) {
     const passed = results.every(r => r.passed);
     setTestResults({ results, passed });
     if (passed) {
+      // Fortschritt speichern
+      if (labId) markExerciseDone(labId, ex.id);
       // Kurz warten, dann scrollen damit Erfolg sichtbar wird
       setTimeout(() => {
         document.querySelector('.codelab__success')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -110,18 +158,22 @@ export default function CodeLab({ data }) {
         <span className="codelab__counter">{exIndex + 1} / {total}</span>
       </div>
 
+      {/* ── Gesamtfortschritt-Badge ── */}
+      {labId && <LabProgressBadge labId={labId} total={total} />}
+
       {/* ── Fortschrittspunkte ── */}
       <div className="codelab__dots">
-        {exercises.map((_, i) => (
+        {exercises.map((ex_i, i) => (
           <button
             key={i}
             className={[
               'codelab__dot',
-              i === exIndex ? 'codelab__dot--active' : '',
-              i < exIndex   ? 'codelab__dot--done'   : '',
+              i === exIndex          ? 'codelab__dot--active'    : '',
+              isDone(ex_i)           ? 'codelab__dot--completed' : '',
+              i < exIndex && !isDone(ex_i) ? 'codelab__dot--done' : '',
             ].join(' ')}
             onClick={() => { setExIndex(i); }}
-            title={`Aufgabe ${i + 1}: ${exercises[i].title}`}
+            title={`Aufgabe ${i + 1}: ${exercises[i].title}${isDone(ex_i) ? ' ✓' : ''}`}
           />
         ))}
       </div>
@@ -217,6 +269,22 @@ export default function CodeLab({ data }) {
               </span>
             )}
           </div>
+
+          {/* Live-Vorschau für HTML/CSS */}
+          {hasPreview && (
+            <div className="codelab__preview">
+              <div className="codelab__preview-header">
+                <span className="codelab__preview-label">👁 Vorschau</span>
+                <span className="codelab__preview-hint">aktualisiert automatisch</span>
+              </div>
+              <iframe
+                className="codelab__preview-frame"
+                srcDoc={previewSrc}
+                sandbox="allow-scripts"
+                title="Live-Vorschau"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

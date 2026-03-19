@@ -1,0 +1,113 @@
+.glossar-term {
+  position: relative;
+  display: inline;
+}
+
+.glossar-term__trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--primary, #667eea);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  border-radius: 3px;
+  transition: background 0.15s;
+}
+
+.glossar-term__trigger:hover,
+.glossar-term__trigger--open {
+  background: rgba(102, 126, 234, 0.1);
+  outline: none;
+}
+
+.glossar-term__dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary, #667eea);
+  margin-bottom: 3px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* ── Popup ── */
+.glossar-term__popup {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px 14px;
+  min-width: 220px;
+  max-width: 300px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* Sicherstellen dass Text nicht umbricht wie inline */
+  white-space: normal;
+  text-align: left;
+  animation: glossar-popup-in 0.15s ease;
+}
+
+/* Kleines Dreieck unten */
+.glossar-term__popup::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--surface, #fff);
+  filter: drop-shadow(0 1px 0 var(--border, #e2e8f0));
+}
+
+.glossar-term__popup-title {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--primary, #667eea);
+  border-bottom: 1px solid var(--border, #e2e8f0);
+  padding-bottom: 6px;
+  margin-bottom: 2px;
+}
+
+.glossar-term__popup-def {
+  font-size: 0.8rem;
+  color: var(--text, #1e293b);
+  line-height: 1.5;
+}
+
+@keyframes glossar-popup-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Auf mobilen Geräten: Popup links ausrichten wenn zu weit rechts */
+@media (max-width: 600px) {
+  .glossar-term__popup {
+    left: 0;
+    transform: none;
+    min-width: 180px;
+    max-width: 260px;
+  }
+  .glossar-term__popup::after {
+    left: 20px;
+    transform: none;
+  }
+}

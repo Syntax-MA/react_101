@@ -1,4 +1,6 @@
 import CodeBlock        from '../components/ui/CodeBlock';
+import CodeDiff         from '../components/ui/CodeDiff';
+import GlossarTerm      from '../components/ui/GlossarTerm';
 import Concept          from '../components/ui/Concept';
 import TaskBox          from '../components/ui/TaskBox';
 import PageNav          from '../components/ui/PageNav';
@@ -8,10 +10,12 @@ import MarkdownViewer   from '../components/ui/MarkdownViewer';
 import Quiz             from '../components/interactive/Quiz';
 import FillExercise     from '../components/interactive/FillExercise';
 import DragDropExercise from '../components/interactive/DragDropExercise';
-import CodeLab          from '../components/interactive/CodeLab';
+import CodeLab        from '../components/interactive/CodeLab';
+import BugFinder      from '../components/interactive/BugFinder';
 import { quizData }     from '../data/quizData';
 import { fillChapter3, dragDropChapter3 } from '../data/exerciseData';
-import { labChapter3 }  from '../data/labData';
+import { labChapter3 }   from '../data/labData';
+import { bugChapter3 }   from '../data/bugData';
 import ch3Md from '../data/md/uebung-ch3.md?raw';
 
 export default function Chapter3({ onPrev, onNext }) {
@@ -101,6 +105,32 @@ export default function Chapter3({ onPrev, onNext }) {
               <p>State lebt lokal in seiner Komponente. Mehrere Instanzen = unabhängige States, unabhängige Lifecyclen.</p>
             </Concept>
           </div>
+
+          <hr className="div" />
+          <h3 className="section-title">🔀 Schritt-für-Schritt: Statisch → Dynamisch</h3>
+          <p style={{ marginBottom: 8 }}>So fügt man <GlossarTerm term="useState">useState</GlossarTerm> zu einer statischen <GlossarTerm term="Komponente">Komponente</GlossarTerm> hinzu:</p>
+          <CodeDiff
+            filename="Button.jsx – vor und nach useState"
+            before={`import React from 'react';
+
+function LikeButton() {
+  return (
+    <button>
+      ❤️ Gefällt mir
+    </button>
+  );
+}`}
+            after={`import { useState } from 'react';
+
+function LikeButton() {
+  const [liked, setLiked] = useState(false);
+  return (
+    <button onClick={() => setLiked(!liked)}>
+      {liked ? '❤️ Gefällt mir!' : '🤍 Gefällt mir'}
+    </button>
+  );
+}`}
+          />
         </>}
 
         /* ── 3. Knowledge Check ────────────────────────────── */
@@ -112,7 +142,7 @@ export default function Chapter3({ onPrev, onNext }) {
 
         /* ── 4. Lab ────────────────────────────────────────── */
         labContent={
-          <CodeLab data={labChapter3} />
+          <CodeLab data={labChapter3} labId="labChapter3" />
         }
 
         /* ── 5. Übung ──────────────────────────────────────── */
@@ -127,6 +157,8 @@ export default function Chapter3({ onPrev, onNext }) {
           </TaskBox>
           <MarkdownViewer content={ch3Md} />
         </>}
+
+        bugsContent={<BugFinder data={bugChapter3} />}
       />
 
       <PageNav

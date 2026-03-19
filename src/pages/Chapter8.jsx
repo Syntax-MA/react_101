@@ -7,8 +7,12 @@ import MarkdownViewer  from '../components/ui/MarkdownViewer';
 import Quiz            from '../components/interactive/Quiz';
 import FillExercise    from '../components/interactive/FillExercise';
 import DragDropExercise from '../components/interactive/DragDropExercise';
+import CodeLab        from '../components/interactive/CodeLab';
+import BugFinder      from '../components/interactive/BugFinder';
 import { quizData }   from '../data/quizData';
 import { fillChapter8, dragDropChapter8 } from '../data/exerciseData';
+import { labChapter8 }   from '../data/labData';
+import { bugChapter8 }   from '../data/bugData';
 import ch8Md from '../data/md/uebung-ch8.md?raw';
 
 export default function Chapter8({ onPrev, onNext }) {
@@ -147,12 +151,7 @@ export default function Chapter8({ onPrev, onNext }) {
         </>}
 
         /* ── 4. Lab ────────────────────────────────────────── */
-        labContent={
-          <div className="check-empty">
-            <p className="check-note">
-              💻 Code-Lab für <strong>23.2</strong> folgt bald.
-            </p>
-          </div>
+        labContent={<CodeLab data={labChapter8} labId="labChapter8" />
         }
 
         /* ── 5. Übung ──────────────────────────────────────── */
@@ -168,6 +167,8 @@ export default function Chapter8({ onPrev, onNext }) {
           </TaskBox>
           <MarkdownViewer content={ch8Md} />
         </>}
+
+        bugsContent={<BugFinder data={bugChapter8} />}
       />
 
       <PageNav

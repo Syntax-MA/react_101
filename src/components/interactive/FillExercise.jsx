@@ -22,10 +22,14 @@ export default function FillExercise({ data }) {
 
   // Alle Blank-Definitionen flach gesammelt
   const allBlanks = lines.flat().filter(t => t.type === 'blank');
-  const usedWords = new Set(Object.values(filled));
+
+  // Zählt wie oft jedes Wort in der Bank verfügbar ist vs. bereits verwendet
+  const bankCounts = wordBank.reduce((acc, w) => ({ ...acc, [w]: (acc[w] || 0) + 1 }), {});
+  const usedCounts = Object.values(filled).reduce((acc, w) => ({ ...acc, [w]: (acc[w] || 0) + 1 }), {});
+  const isExhausted = w => (usedCounts[w] || 0) >= (bankCounts[w] || 0);
 
   function handleWordClick(word) {
-    if (usedWords.has(word)) return;
+    if (isExhausted(word)) return;
     if (selectedBlank !== null) {
       // Platzieren
       place(selectedBlank, word);
@@ -126,12 +130,12 @@ export default function FillExercise({ data }) {
       <div className="fill__bank">
         <h4 className="fill__bank-title">Wortliste – klicke ein Wort, dann eine Lücke (oder umgekehrt)</h4>
         <div className="fill__chips">
-          {wordBank.map(word => {
+          {wordBank.map((word, i) => {
             let cls = 'fill__word';
-            if (usedWords.has(word)) cls += ' fill__word--used';
+            if (isExhausted(word)) cls += ' fill__word--used';
             else if (selectedWord === word) cls += ' fill__word--selected';
             return (
-              <span key={word} className={cls} onClick={() => handleWordClick(word)}>
+              <span key={`${word}-${i}`} className={cls} onClick={() => handleWordClick(word)}>
                 {word}
               </span>
             );

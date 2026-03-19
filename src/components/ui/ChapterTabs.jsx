@@ -2,8 +2,8 @@ import { useState } from 'react';
 import './ChapterTabs.css';
 
 /**
- * 5-tab chapter layout:
- *   Slides | Key Learnings | Knowledge Check | Lab | Übung
+ * 6-tab chapter layout:
+ *   Slides | Key Learnings | Knowledge Check | Lab | Übung | Bugs
  *
  * Props:
  *   slidesContent   – SlideCarousel
@@ -11,6 +11,7 @@ import './ChapterTabs.css';
  *   checkContent     – Quiz + interactive exercises
  *   labContent       – CodeLab
  *   uebungContent    – MarkdownViewer (markdown exercise file)
+ *   bugsContent      – BugFinder (optional)
  */
 export default function ChapterTabs({
   slidesContent,
@@ -18,15 +19,17 @@ export default function ChapterTabs({
   checkContent,
   labContent,
   uebungContent,
+  bugsContent,
 }) {
   const [active, setActive] = useState('slides');
 
   const tabs = [
-    { id: 'slides',    label: '🖥 Slides'          },
-    { id: 'learnings', label: '📖 Key Learnings'   },
-    { id: 'check',     label: '✅ Knowledge Check' },
-    { id: 'lab',       label: '💻 Lab'             },
-    { id: 'uebung',    label: '✏️ Übung'            },
+    { id: 'slides',    label: '🖥 Slides'            },
+    { id: 'learnings', label: '📖 Key Learnings'     },
+    { id: 'check',     label: '✅ Knowledge Check'   },
+    ...(bugsContent ? [{ id: 'bugs', label: '🐛 Bughunter' }] : []),
+    { id: 'lab',       label: '💻 Lab'               },
+    { id: 'uebung',    label: '✏️ Übung'              },
   ];
 
   const panels = {
@@ -35,6 +38,7 @@ export default function ChapterTabs({
     check:     checkContent,
     lab:       labContent,
     uebung:    uebungContent,
+    bugs:      bugsContent,
   };
 
   return (

@@ -1,0 +1,374 @@
+.bugfinder {
+  border-radius: 12px;
+  border: 1px solid var(--border, #e2e8f0);
+  overflow: hidden;
+  background: var(--bg, #fff);
+  font-size: 14px;
+}
+
+/* ── Header ── */
+.bugfinder__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--bg3, #f8f9ff);
+  border-bottom: 1px solid var(--border, #e2e8f0);
+}
+
+.bugfinder__badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.bugfinder__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text, #1e293b);
+  margin: 0;
+  flex: 1;
+}
+
+.bugfinder__counter {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted, #64748b);
+  white-space: nowrap;
+}
+
+/* ── Dots ── */
+.bugfinder__dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border, #e2e8f0);
+  background: var(--bg3, #f8f9ff);
+}
+
+.bugfinder__dot {
+  width: 28px;
+  height: 8px;
+  border-radius: 4px;
+  border: none;
+  background: var(--border, #cbd5e1);
+  cursor: pointer;
+  transition: all .2s;
+  padding: 0;
+}
+
+.bugfinder__dot--active {
+  background: #dc2626;
+  box-shadow: 0 0 8px rgba(220, 38, 38, .4);
+}
+
+/* ── Body ── */
+.bugfinder__body {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  min-height: 440px;
+}
+
+/* ── Left ── */
+.bugfinder__left {
+  padding: 20px;
+  border-right: 1px solid var(--border, #e2e8f0);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+
+.bugfinder__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.bugfinder__cat {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+}
+
+.bugfinder__ex-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text, #1e293b);
+}
+
+.bugfinder__desc {
+  font-size: 0.85rem;
+  color: var(--text2, #374151);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Actions ── */
+.bugfinder__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bugfinder__btn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+
+.bugfinder__btn--check {
+  background: #dc2626;
+  color: white;
+}
+
+.bugfinder__btn--check:hover {
+  background: #b91c1c;
+}
+
+.bugfinder__btn--hint {
+  background: rgba(251, 191, 36, .15);
+  color: #b45309;
+}
+
+.bugfinder__btn--hint.active,
+.bugfinder__btn--hint:hover {
+  background: rgba(251, 191, 36, .3);
+}
+
+.bugfinder__btn--reset {
+  background: var(--bg3, #f1f5f9);
+  color: var(--muted, #64748b);
+}
+
+.bugfinder__btn--reset:hover {
+  background: var(--border, #e2e8f0);
+}
+
+.bugfinder__btn--next {
+  background: #16a34a;
+  color: white;
+  margin-top: 8px;
+}
+
+.bugfinder__btn--next:hover {
+  background: #15803d;
+}
+
+.bugfinder__btn--solution {
+  background: var(--bg3, #f1f5f9);
+  color: var(--muted, #64748b);
+  font-size: 0.78rem;
+}
+
+/* ── Hint ── */
+.bugfinder__hint {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(251, 191, 36, .12);
+  border: 1px solid rgba(251, 191, 36, .3);
+  border-radius: 8px;
+  font-size: 0.83rem;
+  color: #92400e;
+  line-height: 1.5;
+  animation: bugfinder-slide-in 0.2s ease;
+}
+
+.bugfinder__hint-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+/* ── Results ── */
+.bugfinder__results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: bugfinder-slide-in 0.2s ease;
+}
+
+.bugfinder__result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.bugfinder__result--pass {
+  background: rgba(34, 197, 94, .1);
+  color: #166534;
+}
+
+.bugfinder__result--fail {
+  background: rgba(239, 68, 68, .08);
+  color: #991b1b;
+}
+
+.bugfinder__result-icon {
+  font-size: 1em;
+  flex-shrink: 0;
+}
+
+/* ── Success ── */
+.bugfinder__success {
+  background: linear-gradient(135deg, rgba(34,197,94,.1), rgba(16,185,129,.08));
+  border: 1px solid rgba(34, 197, 94, .3);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: bugfinder-slide-in 0.25s ease;
+}
+
+.bugfinder__success-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #166534;
+}
+
+.bugfinder__explanation {
+  font-size: 0.82rem;
+  color: var(--text2, #374151);
+  line-height: 1.6;
+  background: rgba(0,0,0,.03);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.bugfinder__complete {
+  font-weight: 700;
+  color: #16a34a;
+  font-size: 0.9rem;
+}
+
+/* ── Solution block ── */
+.bugfinder__solution-block {
+  background: var(--bg3, #f8f9ff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: bugfinder-slide-in 0.2s ease;
+}
+
+.bugfinder__solution-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.bugfinder__solution-code {
+  background: var(--bg2, #0f172a);
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 0.75rem;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  overflow-x: auto;
+  margin: 0;
+  white-space: pre;
+}
+
+/* ── Right: Editor ── */
+.bugfinder__right {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg2, #0f172a);
+}
+
+.bugfinder__editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(255,255,255,.04);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.bugfinder__filename {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #94a3b8;
+  font-family: 'Fira Code', 'Consolas', monospace;
+}
+
+.bugfinder__editor-hint {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+.bugfinder__editor-wrap {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.bugfinder__linenos {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 10px;
+  text-align: right;
+  color: #475569;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  user-select: none;
+  background: rgba(0,0,0,.15);
+  min-width: 36px;
+  flex-shrink: 0;
+}
+
+.bugfinder__textarea {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  color: #e2e8f0;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  border: none;
+  outline: none;
+  resize: none;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+  tab-size: 2;
+}
+
+/* ── Animation ── */
+@keyframes bugfinder-slide-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 800px) {
+  .bugfinder__body {
+    grid-template-columns: 1fr;
+  }
+  .bugfinder__right {
+    min-height: 280px;
+  }
+}

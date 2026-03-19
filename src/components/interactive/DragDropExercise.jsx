@@ -26,19 +26,20 @@ export default function DragDropExercise({ data }) {
 
   function handleDrop(targetId) {
     if (!dragging.current) return;
-    // Slot belegt? Item zurückgeben
+    // Snapshot vor setState ziehen, damit der Callback nicht auf null trifft
+    const item = dragging.current;
+    dragging.current = null;
     setPlaced(prev => {
       const next = { ...prev };
       // Entferne das gezogene Item aus einem evtl. anderen Slot
       Object.keys(next).forEach(k => {
-        if (next[k]?.id === dragging.current.id) next[k] = null;
+        if (next[k]?.id === item.id) next[k] = null;
       });
-      next[targetId] = dragging.current;
+      next[targetId] = item;
       return next;
     });
     setChecked(false);
     setResult(null);
-    dragging.current = null;
   }
 
   function removePlaced(targetId) {

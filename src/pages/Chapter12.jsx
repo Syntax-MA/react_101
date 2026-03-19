@@ -140,7 +140,7 @@ export default function Chapter12({ onPrev, onNext }) {
 
         /* ── 4. Lab ────────────────────────────────────────── */
         labContent={
-          <CodeLab data={labChapter12} />
+          <CodeLab data={labChapter12} labId="labChapter12" />
         }
 
         /* ── 5. Übung ──────────────────────────────────────── */
