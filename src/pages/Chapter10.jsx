@@ -13,6 +13,8 @@ import { quizData }    from '../data/quizData';
 import { fillChapter10, dragDropChapter10 } from '../data/exerciseData';
 import { labChapter10 } from '../data/labData';
 import ch10Md from '../data/md/uebung-ch10.md?raw';
+import KanbanBoard from '../components/interactive/KanbanBoard';
+import { kanbanChapter10 } from '../data/kanbanData';
 
 export default function Chapter10({ onPrev, onFinish }) {
   return (
@@ -312,12 +314,13 @@ export default function Chapter10({ onPrev, onFinish }) {
         uebungContent={<>
           <TaskBox title="React Mini-App (freiwillig)" time="Flex">
             <ol>
-              <li>Lies die vollständige Aufgabenstellung unten durch.</li>
+              <li>Tracke deinen Fortschritt im Sprint Board unten.</li>
               <li>Wähle einen der vorgeschlagenen App-Ideen oder eine eigene.</li>
               <li>Erstelle dein Vite-React-Projekt und entwickle deine Komponenten.</li>
               <li>Optionale Abgabe: bis Montag 23:59 Uhr als ZIP (ohne node_modules) hochladen.</li>
             </ol>
           </TaskBox>
+          <KanbanBoard data={kanbanChapter10} />
           <MarkdownViewer content={ch10Md} />
         </>}
       />

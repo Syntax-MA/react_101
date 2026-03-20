@@ -1,0 +1,328 @@
+/* ══════════════════════════════════════════════════════════
+   KanbanBoard – Sprint Board für Freitagskapitel
+══════════════════════════════════════════════════════════ */
+
+.kanban {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 32px 0;
+}
+
+/* ── Header ── */
+.kanban__header {
+  background: linear-gradient(90deg, #0c1a2e, var(--bg3));
+  border-bottom: 1px solid var(--border);
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kanban__header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.kanban__badge {
+  background: rgba(139, 92, 246, .18);
+  color: #a78bfa;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  flex-shrink: 0;
+}
+
+.kanban__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 2px;
+}
+
+.kanban__project {
+  font-size: .8rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.kanban__reset {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 5px 12px;
+  color: var(--muted);
+  font-size: .78rem;
+  cursor: pointer;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.kanban__reset:hover {
+  border-color: #a78bfa;
+  color: #a78bfa;
+}
+
+/* ── Description ── */
+.kanban__desc {
+  padding: 12px 22px;
+  background: rgba(139, 92, 246, .05);
+  border-bottom: 1px solid var(--border);
+}
+.kanban__desc p {
+  font-size: .875rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Progress bar ── */
+.kanban__progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.kanban__progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg3);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.kanban__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7c3aed, #a78bfa);
+  border-radius: 99px;
+  transition: width .4s ease;
+}
+
+.kanban__progress-label {
+  font-size: .78rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── Board (3 columns) ── */
+.kanban__board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  min-height: 300px;
+}
+
+@media (max-width: 860px) {
+  .kanban__board {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Column ── */
+.kanban__col {
+  padding: 16px;
+  border-right: 1px solid var(--border);
+  transition: background .15s;
+}
+.kanban__col:last-child {
+  border-right: none;
+}
+.kanban__col--droptarget {
+  background: rgba(139, 92, 246, .04);
+}
+
+.kanban__col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.kanban__col-label {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.kanban__col-count {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 1px 8px;
+  font-size: .72rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Column accent colors */
+.col--todo       .kanban__col-label { color: #94a3b8; }
+.col--inprogress .kanban__col-label { color: #f59e0b; }
+.col--done       .kanban__col-label { color: #22c55e; }
+
+.col--inprogress {
+  background: rgba(245, 158, 11, .03);
+}
+.col--done {
+  background: rgba(34, 197, 94, .03);
+}
+
+/* ── Cards container ── */
+.kanban__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kanban__empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: .78rem;
+  padding: 24px 8px;
+  opacity: .6;
+}
+
+/* ── Card ── */
+.kanban__card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  cursor: grab;
+  transition: box-shadow .15s, transform .15s, opacity .15s;
+  user-select: none;
+}
+.kanban__card:active {
+  cursor: grabbing;
+}
+.kanban__card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.18);
+  transform: translateY(-1px);
+}
+.kanban__card--done {
+  opacity: .7;
+}
+.kanban__card--done .kanban__card-title {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.kanban__card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.kanban__card-label {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  background: rgba(139, 92, 246, .15);
+  color: #a78bfa;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.kanban__card-expand {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: .7rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background .15s;
+}
+.kanban__card-expand:hover {
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+}
+
+.kanban__card-title {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+
+/* ── Acceptance Criteria ── */
+.kanban__criteria {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding-top: 8px;
+}
+
+.kanban__criterion {
+  display: flex;
+  gap: 6px;
+  font-size: .76rem;
+  color: var(--muted);
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+
+.kanban__criterion-icon {
+  flex-shrink: 0;
+  color: #475569;
+  font-size: .8rem;
+  margin-top: 1px;
+}
+
+/* ── Move buttons ── */
+.kanban__card-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  margin-top: 2px;
+}
+
+.kanban__move-btn {
+  font-size: .7rem;
+  padding: 3px 9px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+
+.kanban__move-btn--forward {
+  background: rgba(139, 92, 246, .12);
+  color: #a78bfa;
+  border-color: rgba(139, 92, 246, .25);
+}
+.kanban__move-btn--forward:hover {
+  background: rgba(139, 92, 246, .25);
+}
+
+.kanban__move-btn--back {
+  background: transparent;
+  color: var(--muted);
+}
+.kanban__move-btn--back:hover {
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+}
+
+/* Done column: forward button grün */
+.col--inprogress .kanban__move-btn--forward {
+  background: rgba(34, 197, 94, .12);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, .25);
+}
+.col--inprogress .kanban__move-btn--forward:hover {
+  background: rgba(34, 197, 94, .25);
+}

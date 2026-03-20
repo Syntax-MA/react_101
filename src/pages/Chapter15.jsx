@@ -4,6 +4,7 @@ import PageNav        from '../components/ui/PageNav';
 import ChapterTabs    from '../components/ui/ChapterTabs';
 import Concept        from '../components/ui/Concept';
 import MarkdownViewer from '../components/ui/MarkdownViewer';
+import CodeBlock      from '../components/ui/CodeBlock';
 import FillExercise    from '../components/interactive/FillExercise';
 import DragDropExercise from '../components/interactive/DragDropExercise';
 import CodeLab        from '../components/interactive/CodeLab';
@@ -14,6 +15,8 @@ import { labChapter15 } from '../data/labData';
 import { bugChapter13 }   from '../data/bugData';
 import { fillChapter15, dragDropChapter15 } from '../data/exerciseData';
 import ch15Md from '../data/md/uebung-ch15.md?raw';
+import KanbanBoard from '../components/interactive/KanbanBoard';
+import { kanbanChapter15 } from '../data/kanbanData';
 
 export default function Chapter15({ onPrev, onNext }) {
   return (
@@ -219,15 +222,13 @@ export default function Chapter15({ onPrev, onNext }) {
         uebungContent={<>
           <TaskBox title="Portfolio-Projekt bauen" time="90–120 Min">
             <ol>
+              <li>Tracke deinen Fortschritt im Sprint Board unten.</li>
               <li>Wähle <strong>Weg A</strong> (freies Thema) oder <strong>Weg B</strong> (geführtes Portfolio)</li>
               <li>Erstelle die Projektstruktur: <code>portfolio/index.html</code> und <code>portfolio/style.css</code></li>
-              <li>Baue das HTML-Gerüst mit allen semantischen Elementen</li>
-              <li>Style die Seite mit CSS: Navigation (Flexbox), Inhaltsbereich, Karten (Grid)</li>
-              <li>Füge mindestens 2 Media Queries für Responsive Design hinzu</li>
               <li>Schreibe eine kurze <code>README.md</code>: Was hast du gebaut? Was hast du gelernt?</li>
-              <li>Mache einen Screenshot und stelle das Projekt vor</li>
             </ol>
           </TaskBox>
+          <KanbanBoard data={kanbanChapter15} />
           <MarkdownViewer content={ch15Md} />
         </>}
 
