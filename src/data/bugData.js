@@ -1057,3 +1057,198 @@ a {
     },
   ],
 };
+
+/* ══════════════════════════════════════════════════════════════
+   23.5 – JavaScript Mini-App (Freitag)
+   Synthese-Bugs: alles aus der Woche zusammen
+══════════════════════════════════════════════════════════════ */
+export const bugChapter14 = {
+  title: '23.5 · JS Mini-App – Fehler-Simulator',
+  exercises: [
+    {
+      id: 1,
+      title: 'await vergessen',
+      category: 'js',
+      description:
+        'Die loadData()-Funktion soll Nutzer von einer API laden und anzeigen. ' +
+        'Aber statt der Daten erscheint "[object Promise]" in der Liste. Warum?',
+      buggyCode:
+`async function loadData() {
+  const res  = fetch('https://randomuser.me/api/?results=5');
+  const data = res.json();
+
+  data.results.forEach(user => {
+    const li = document.createElement('li');
+    li.textContent = user.name.first;
+    list.appendChild(li);
+  });
+}`,
+      hint: 'fetch() und .json() sind beide asynchron – was muss vor beiden stehen?',
+      explanation:
+        'Ohne await gibt fetch() ein Promise-Objekt zurück, kein echtes Response-Objekt. Das gleiche gilt für .json(). Beide Zeilen brauchen await: const res = await fetch(...) und const data = await res.json().',
+      tests: [
+        { label: 'await fetch() vorhanden',  check: c => /await\s+fetch\(/.test(c) },
+        { label: 'await res.json() vorhanden', check: c => /await\s+\w+\.json\(\)/.test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Array direkt mutiert',
+      category: 'js',
+      description:
+        'Die App soll erlauben, User aus der Liste zu entfernen. ' +
+        'Nach dem Klick auf "Entfernen" verschwindet der User aber nicht aus der Anzeige. ' +
+        'Was ist falsch an der removeUser-Funktion?',
+      buggyCode:
+`let users = [
+  { id: 1, name: 'Anna' },
+  { id: 2, name: 'Ben'  },
+  { id: 3, name: 'Clara'},
+];
+
+function removeUser(id) {
+  const index = users.findIndex(u => u.id === id);
+  users.splice(index, 1);   // direktes Mutieren!
+  render();
+}
+
+function render() {
+  list.innerHTML = users.map(u =>
+    \`<li>\${u.name} <button onclick="removeUser(\${u.id})">×</button></li>\`
+  ).join('');
+}`,
+      hint: 'splice() verändert das Original-Array direkt. In modernem JS soll State immutabel sein.',
+      explanation:
+        'splice() mutiert das Array an Ort und Stelle. Das funktioniert hier zufällig, ist aber eine schlechte Praxis (führt zu Bugs bei reaktiven Frameworks). Besser: users = users.filter(u => u.id !== id) – das erzeugt ein neues Array ohne das gelöschte Element.',
+      tests: [
+        { label: 'filter() statt splice()', check: c => /\.filter\(/.test(c) && !/\.splice\(/.test(c) },
+        { label: 'users wird neu zugewiesen', check: c => /users\s*=\s*users\.filter/.test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Event Listener falsch angehängt',
+      category: 'js',
+      description:
+        'Der "Laden"-Button soll beim Klick Daten abrufen. ' +
+        'Aber nichts passiert wenn man ihn anklickt. Findest du den Fehler?',
+      buggyCode:
+`const btn = document.getElementById('loadBtn');
+
+async function loadData() {
+  const res  = await fetch('https://api.example.com/data');
+  const data = await res.json();
+  console.log(data);
+}
+
+btn.addEventListener('click', loadData());`,
+      hint: 'Wird loadData als Funktion übergeben, oder als Ergebnis eines Funktionsaufrufs?',
+      explanation:
+        'loadData() ruft die Funktion sofort beim Registrieren des Listeners auf und übergibt das Ergebnis (ein Promise) als Callback. So wird die Funktion beim Klick nie ausgeführt. Richtig: btn.addEventListener("click", loadData) – ohne die Klammern, damit loadData als Referenz übergeben wird.',
+      tests: [
+        { label: 'loadData ohne () als Callback', check: c => /addEventListener\(\s*['"]click['"]\s*,\s*loadData\s*\)/.test(c) },
+        { label: 'Keine sofortige Ausführung im Listener', check: c => !/addEventListener\(\s*['"]click['"]\s*,\s*loadData\(\)/.test(c) },
+      ],
+    },
+  ],
+};
+
+/* ══════════════════════════════════════════════════════════════
+   24.5 – React Mini-App (Freitag)
+   Synthese-Bugs: alles aus der React-Woche zusammen
+══════════════════════════════════════════════════════════════ */
+export const bugChapter15 = {
+  title: '24.5 · React Mini-App – Fehler-Simulator',
+  exercises: [
+    {
+      id: 1,
+      title: 'State direkt mutiert (Array)',
+      category: 'react',
+      description:
+        'Die Todo-App soll neue Einträge hinzufügen. Nach dem Absenden des Formulars ' +
+        'erscheint der neue Eintrag aber nicht in der Liste – obwohl keine Fehlermeldung kommt. Warum?',
+      buggyCode:
+`function TodoApp() {
+  const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState('');
+
+  function addTodo() {
+    todos.push({ id: Date.now(), text: input });
+    setTodos(todos);
+    setInput('');
+  }
+
+  return (
+    <>
+      <input value={input} onChange={e => setInput(e.target.value)} />
+      <button onClick={addTodo}>Hinzufügen</button>
+      <ul>{todos.map(t => <li key={t.id}>{t.text}</li>)}</ul>
+    </>
+  );
+}`,
+      hint: 'React re-rendert nur, wenn sich die State-Referenz ändert – nicht bei Mutation des Originals.',
+      explanation:
+        'todos.push() mutiert das existierende Array direkt. setTodos(todos) übergibt dieselbe Array-Referenz – React erkennt keine Änderung und überspringt den Re-Render. Fix: setTodos([...todos, { id: Date.now(), text: input }]) – Spread erzeugt ein neues Array-Objekt.',
+      tests: [
+        { label: 'Spread-Operator [...todos, ...] verwendet', check: c => /\[\s*\.\.\.\s*todos/.test(c) },
+        { label: 'Kein .push() auf todos', check: c => !/todos\.push\(/.test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Fehlendes key-Prop',
+      category: 'react',
+      description:
+        'Die Komponente rendert eine Produktliste, aber in der Konsole erscheint eine Warnung: ' +
+        '"Each child in a list should have a unique key prop." Wo fehlt das key?',
+      buggyCode:
+`function ProductList({ products }) {
+  return (
+    <ul>
+      {products.map(product => (
+        <li>
+          <strong>{product.name}</strong>
+          <span> – {product.price} €</span>
+        </li>
+      ))}
+    </ul>
+  );
+}`,
+      hint: 'Das key-Prop gehört auf das äußerste Element, das .map() zurückgibt.',
+      explanation:
+        'React braucht key auf jedem Element einer gemappten Liste, um Änderungen effizient zu erkennen. Das key muss eindeutig unter Geschwister-Elementen sein. Füge key={product.id} (oder einen anderen eindeutigen Wert) zum <li>-Element hinzu.',
+      tests: [
+        { label: 'key-Prop auf <li> vorhanden', check: c => /<li\s[^>]*key\s*=/.test(c) },
+        { label: 'key nutzt eindeutigen Wert (id, name...)', check: c => /key=\{product\.(id|name)\}|key=\{`/.test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'useEffect Dependency Array fehlt',
+      category: 'react',
+      description:
+        'Die Komponente soll Daten einmalig beim Mounten laden. ' +
+        'Stattdessen läuft der Fetch in einer Endlosschleife und der Browser friert ein. Was ist das Problem?',
+      buggyCode:
+`function UserProfile({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch(\`/api/users/\${userId}\`)
+      .then(res => res.json())
+      .then(data => setUser(data));
+  });
+
+  if (!user) return <p>Lädt...</p>;
+  return <h2>{user.name}</h2>;
+}`,
+      hint: 'useEffect ohne zweites Argument läuft nach jedem Render – auch nach dem, den setUser() ausgelöst hat.',
+      explanation:
+        'Kein Dependency Array → useEffect läuft nach jedem Render. setUser() löst einen Re-Render aus → useEffect läuft wieder → Endlosschleife. Fix: Füge [userId] als Dependency Array hinzu: useEffect(() => { ... }, [userId]). So läuft der Effekt nur, wenn sich userId ändert (und beim ersten Render).',
+      tests: [
+        { label: 'Dependency Array vorhanden', check: c => /useEffect\([\s\S]*?,\s*\[/.test(c) },
+        { label: 'userId als Dependency', check: c => /useEffect\([\s\S]*?,\s*\[\s*userId\s*\]/.test(c) },
+      ],
+    },
+  ],
+};

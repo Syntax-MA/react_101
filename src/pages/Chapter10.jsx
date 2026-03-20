@@ -14,7 +14,9 @@ import { fillChapter10, dragDropChapter10 } from '../data/exerciseData';
 import { labChapter10 } from '../data/labData';
 import ch10Md from '../data/md/uebung-ch10.md?raw';
 import KanbanBoard from '../components/interactive/KanbanBoard';
+import BugFinder      from '../components/interactive/BugFinder';
 import { kanbanChapter10 } from '../data/kanbanData';
+import { bugChapter15 }    from '../data/bugData';
 
 export default function Chapter10({ onPrev, onFinish }) {
   return (
@@ -323,6 +325,8 @@ export default function Chapter10({ onPrev, onFinish }) {
           <KanbanBoard data={kanbanChapter10} />
           <MarkdownViewer content={ch10Md} />
         </>}
+
+        bugsContent={<BugFinder data={bugChapter15} />}
       />
 
       <PageNav

@@ -12,7 +12,9 @@ import { quizData }    from '../data/quizData';
 import { fillChapter9, dragDropChapter9 } from '../data/exerciseData';
 import ch9Md from '../data/md/uebung-ch9.md?raw';
 import KanbanBoard from '../components/interactive/KanbanBoard';
+import BugFinder      from '../components/interactive/BugFinder';
 import { kanbanChapter9 } from '../data/kanbanData';
+import { bugChapter14 }   from '../data/bugData';
 
 export default function Chapter9({ onPrev, onNext }) {
   return (
@@ -225,6 +227,8 @@ export default function Chapter9({ onPrev, onNext }) {
           <KanbanBoard data={kanbanChapter9} />
           <MarkdownViewer content={ch9Md} />
         </>}
+
+        bugsContent={<BugFinder data={bugChapter14} />}
       />
 
       <PageNav
