@@ -11,6 +11,8 @@ import MarkdownViewer from '../components/ui/MarkdownViewer';
 import { quizData }    from '../data/quizData';
 import { fillChapter9, dragDropChapter9 } from '../data/exerciseData';
 import ch9Md from '../data/md/uebung-ch9.md?raw';
+import KanbanBoard from '../components/interactive/KanbanBoard';
+import { kanbanChapter9 } from '../data/kanbanData';
 
 export default function Chapter9({ onPrev, onNext }) {
   return (
@@ -214,12 +216,13 @@ export default function Chapter9({ onPrev, onNext }) {
         uebungContent={<>
           <TaskBox title="JavaScript Mini-App (freiwillig)" time="Flex">
             <ol>
-              <li>Lies die vollständige Aufgabenstellung unten durch.</li>
+              <li>Tracke deinen Fortschritt im Sprint Board unten.</li>
               <li>Wähle einen der beiden Ansätze (geführt oder frei).</li>
               <li>Erstelle <code>index.html</code>, <code>style.css</code> und <code>app.js</code>.</li>
               <li>Optionale Abgabe: bis Montag 23:59 Uhr als ZIP hochladen.</li>
             </ol>
           </TaskBox>
+          <KanbanBoard data={kanbanChapter9} />
           <MarkdownViewer content={ch9Md} />
         </>}
       />
