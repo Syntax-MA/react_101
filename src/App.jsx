@@ -19,9 +19,14 @@ import Chapter12  from './pages/Chapter12';
 import Chapter13  from './pages/Chapter13';
 import Chapter14  from './pages/Chapter14';
 import Chapter15  from './pages/Chapter15';
+import Chapter16  from './pages/Chapter16';
+import Chapter17  from './pages/Chapter17';
+import Chapter18  from './pages/Chapter18';
+import Chapter19  from './pages/Chapter19';
+import Chapter20  from './pages/Chapter20';
 import { useProgress } from './hooks/useProgress';
 
-const TOTAL = 15;
+const TOTAL = 20;
 
 /**
  * App – Haupt-Layout
@@ -53,7 +58,7 @@ function AppInner() {
 
   function handleFinish() {
     markDone(TOTAL - 1);
-    alert('🎉 Glückwunsch! Du hast alle 15 Kapitel abgeschlossen!');
+    alert('🎉 Glückwunsch! Du hast alle 20 Kapitel abgeschlossen!');
     goToDashboard();
   }
 
@@ -133,6 +138,32 @@ function AppInner() {
     <Chapter10
       key={14}
       onPrev={() => goTo(13)}
+      onNext={() => completeAndNext(14)}
+    />,
+    // ── React II ─────────────────────────────────────────────
+    <Chapter16
+      key={15}
+      onPrev={() => goTo(14)}
+      onNext={() => completeAndNext(15)}
+    />,
+    <Chapter17
+      key={16}
+      onPrev={() => goTo(15)}
+      onNext={() => completeAndNext(16)}
+    />,
+    <Chapter18
+      key={17}
+      onPrev={() => goTo(16)}
+      onNext={() => completeAndNext(17)}
+    />,
+    <Chapter19
+      key={18}
+      onPrev={() => goTo(17)}
+      onNext={() => completeAndNext(18)}
+    />,
+    <Chapter20
+      key={19}
+      onPrev={() => goTo(18)}
       onFinish={handleFinish}
     />,
   ];

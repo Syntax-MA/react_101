@@ -258,6 +258,128 @@ export const kanbanChapter10 = {
 };
 
 /* ══════════════════════════════════════════════════════════
+   25.5 – React Mini-App II
+══════════════════════════════════════════════════════════ */
+export const kanbanChapter20 = {
+  title: '25.5 · Sprint Board – React Mini-App ✨',
+  project: 'Movie-Wishlist oder eigenes Thema',
+  description:
+    'Baut eine vollständige React-App mit Router, State-Management, API-Call und Styling – ' +
+    'als Wochenabschluss für React Grundlagen II.',
+  items: [
+    {
+      id: 'k20-1',
+      col: 'todo',
+      label: 'Setup',
+      title: 'Vite-Projekt vorbereiten & Router einrichten',
+      criteria: [
+        'npm install react-router-dom ausgeführt',
+        'BrowserRouter in main.jsx eingebunden',
+        'Ordnerstruktur: src/pages/, src/components/, src/hooks/',
+        'npm run dev startet ohne Fehler',
+      ],
+    },
+    {
+      id: 'k20-2',
+      col: 'todo',
+      label: 'Router',
+      title: 'Routen definieren',
+      criteria: [
+        'Mindestens 3 Routen: /, /item/:id, /add',
+        'Routes + Route in App.jsx konfiguriert',
+        '404-Route mit path="*" vorhanden',
+        'Keine <a href> für interne Navigation',
+      ],
+    },
+    {
+      id: 'k20-3',
+      col: 'todo',
+      label: 'State',
+      title: 'State-Struktur planen und implementieren',
+      criteria: [
+        'useState für die Haupt-Datenliste',
+        'State-Objekte haben eindeutige IDs (Date.now() oder crypto.randomUUID())',
+        'Kein direktes Mutieren – immer neues Array via spread oder filter()',
+        'State in der Root-Komponente, Callbacks als Props',
+      ],
+    },
+    {
+      id: 'k20-4',
+      col: 'todo',
+      label: 'Hooks',
+      title: 'Performance-Hooks einsetzen',
+      criteria: [
+        'useCallback für Handler-Funktionen die als Props übergeben werden',
+        'useMemo für Sortier- oder Filterfunktionen',
+        'useRef für DOM-Zugriff (z.B. Fokus auf Input nach Submit)',
+        'Dependency Arrays sind korrekt und vollständig',
+      ],
+    },
+    {
+      id: 'k20-5',
+      col: 'todo',
+      label: 'API',
+      title: 'API-Fetch mit useEffect & AbortController',
+      criteria: [
+        'useEffect mit korrektem Dependency Array',
+        'Innere async-Funktion (nicht useEffect selbst async)',
+        'Loading-State während Fetch angezeigt',
+        'Error-State wenn Fetch fehlschlägt',
+        'AbortController für Cleanup beim Unmount',
+      ],
+    },
+    {
+      id: 'k20-6',
+      col: 'todo',
+      label: 'Custom Hook',
+      title: 'useLocalStorage Custom Hook schreiben',
+      criteria: [
+        'Hook beginnt mit "use": useLocalStorage',
+        'localStorage.getItem beim Init, setItem beim Aktualisieren',
+        'Gibt [value, setValue] zurück',
+        'Nach Seiten-Reload bleibt Daten erhalten',
+      ],
+    },
+    {
+      id: 'k20-7',
+      col: 'todo',
+      label: 'Styling',
+      title: 'Komponenten stylen',
+      criteria: [
+        'Mindestens eine Komponente mit CSS Module gestylt',
+        'Tailwind-Klassen für mindestens eine weitere Komponente',
+        'Hover-Effekte und responsive Anpassungen vorhanden',
+        'Keine Inline-Styles außer für dynamische Werte',
+      ],
+    },
+    {
+      id: 'k20-8',
+      col: 'todo',
+      label: 'UI',
+      title: 'CRUD-Funktionalität vollständig',
+      criteria: [
+        'Erstellen: Formular mit kontrolliertem Input',
+        'Lesen: Liste und Detail-Ansicht',
+        'Löschen: mit filter() ohne Mutation',
+        'Optional: Update / Toggle-Status',
+      ],
+    },
+    {
+      id: 'k20-9',
+      col: 'todo',
+      label: 'Abgabe',
+      title: 'Build & Abgabe vorbereiten',
+      criteria: [
+        'npm run build läuft ohne Fehler oder Warnings durch',
+        'Alle Sprint-Karten sind auf "Done" verschoben',
+        'README.md mit Projekt, Komponenten und verwendeten Hooks',
+        'Demo für Lehrperson vorbereitet (2-3 Minuten)',
+      ],
+    },
+  ],
+};
+
+/* ══════════════════════════════════════════════════════════
    22.5 – Portfolio-Projekt
 ══════════════════════════════════════════════════════════ */
 export const kanbanChapter15 = {

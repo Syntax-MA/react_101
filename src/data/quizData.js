@@ -699,4 +699,304 @@ export const quizData = {
       },
     },
   ],
+
+  // ── 25.1 Styling Patterns & CSS ───────────────────────────
+  chapter16: [
+    {
+      question: 'Was ist der Hauptvorteil von CSS Modules gegenüber globalem CSS?',
+      choices: [
+        { id: 'a', text: 'CSS Modules laden schneller' },
+        { id: 'b', text: 'Klassenamen werden automatisch lokal gescoped – keine Namenskonflikte' },
+        { id: 'c', text: 'CSS Modules unterstützen mehr CSS-Eigenschaften' },
+        { id: 'd', text: 'CSS Modules brauchen keinen Import' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <strong>CSS Modules</strong> generieren eindeutige Klassen-Hashes – damit gibt es keine globalen Namenskonflikte mehr.',
+        nok: 'Falsch. Der Hauptvorteil ist der automatische <strong>lokale Scope</strong>: Klassen gelten nur für die Komponente, die das Modul importiert.',
+      },
+    },
+    {
+      question: 'Wie bindet man eine CSS-Module-Klasse in JSX ein?',
+      choices: [
+        { id: 'a', text: 'className="styles.card"' },
+        { id: 'b', text: 'class={styles.card}' },
+        { id: 'c', text: 'className={styles.card}' },
+        { id: 'd', text: 'style={styles.card}' },
+      ],
+      correct: 'c',
+      feedback: {
+        ok: 'Richtig! <code>className={"{styles.card}"}</code> – geschweifte Klammern für den JS-Ausdruck und <code>styles</code> ist das importierte Modul-Objekt.',
+        nok: 'Falsch. Die korrekte Syntax ist <code>className={"{styles.card}"}</code> – ein JS-Ausdruck in geschweiften Klammern, kein String.',
+      },
+    },
+    {
+      question: 'Welche Tailwind-Klasse setzt eine blaue Hintergrundfarbe (Intensität 500)?',
+      choices: [
+        { id: 'a', text: 'background-blue-500' },
+        { id: 'b', text: 'bg-blue-500' },
+        { id: 'c', text: 'color-blue-500' },
+        { id: 'd', text: 'blue-bg-500' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! In Tailwind steht <code>bg-</code> für background-color, gefolgt von Farbe und Intensität.',
+        nok: 'Falsch. Tailwind-Utility-Klassen folgen dem Muster <code>bg-{"{farbe}"}-{"{intensität}"}</code>, also <strong>bg-blue-500</strong>.',
+      },
+    },
+    {
+      question: 'Was bewirkt die Tailwind-Klasse "md:flex"?',
+      choices: [
+        { id: 'a', text: 'Immer display: flex, egal wie breit der Viewport ist' },
+        { id: 'b', text: 'display: flex ab einem Viewport von 768px Breite (Mobile-First Breakpoint)' },
+        { id: 'c', text: 'display: flex nur auf mittleren Monitoren, nicht auf Handys oder großen Bildschirmen' },
+        { id: 'd', text: 'Ein Modifier für mittlere Schriftgröße' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <code>md:</code> ist ein <strong>Responsive Breakpoint</strong>: ab 768px greift die Klasse.',
+        nok: 'Falsch. <code>md:flex</code> aktiviert <code>display: flex</code> ab dem <strong>md-Breakpoint (768px)</strong> – Mobile-First Prinzip.',
+      },
+    },
+  ],
+
+  // ── 25.2 React Hooks ──────────────────────────────────────
+  chapter17: [
+    {
+      question: 'Wann sollte man useCallback einsetzen?',
+      choices: [
+        { id: 'a', text: 'Immer, bei jeder Funktion in einer Komponente' },
+        { id: 'b', text: 'Wenn eine Funktion als Prop an eine memoized Child-Komponente übergeben wird' },
+        { id: 'c', text: 'Nur bei async Funktionen' },
+        { id: 'd', text: 'useCallback und useState erfüllen denselben Zweck' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <strong>useCallback</strong> lohnt sich, wenn eine stabile Funktionsreferenz nötig ist – z. B. als Prop für <code>React.memo()</code>-Kinder.',
+        nok: 'Falsch. <strong>useCallback</strong> ist vor allem nützlich, wenn Funktionen an memoized Child-Komponenten übergeben werden, um unnötige Re-Renders zu vermeiden.',
+      },
+    },
+    {
+      question: 'Was gibt useMemo zurück?',
+      choices: [
+        { id: 'a', text: 'Eine gecachte Funktion' },
+        { id: 'b', text: 'Den gecachten Rückgabewert einer teuren Berechnung' },
+        { id: 'c', text: 'Ein Ref-Objekt' },
+        { id: 'd', text: 'Den vorherigen State-Wert' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <strong>useMemo</strong> gibt den <em>Wert</em> zurück, den die übergebene Funktion berechnet – und cached ihn bis sich die Dependencies ändern.',
+        nok: 'Falsch. <strong>useMemo</strong> cached den <em>berechneten Wert</em>. useCallback cached die Funktion selbst.',
+      },
+    },
+    {
+      question: 'Wie greift man mit useRef auf einen DOM-Knoten zu?',
+      choices: [
+        { id: 'a', text: 'ref.value' },
+        { id: 'b', text: 'ref.node' },
+        { id: 'c', text: 'ref.current' },
+        { id: 'd', text: 'ref.element' },
+      ],
+      correct: 'c',
+      feedback: {
+        ok: 'Richtig! Das DOM-Element oder der gespeicherte Wert ist immer unter <code>ref.current</code> zu finden.',
+        nok: 'Falsch. Refs speichern alles unter <code>.current</code> – also <code>inputRef.current.focus()</code>.',
+      },
+    },
+    {
+      question: 'Was ist die Namens-Konvention für Custom Hooks?',
+      choices: [
+        { id: 'a', text: 'Sie müssen mit "hook" beginnen: hookMyThing' },
+        { id: 'b', text: 'Beliebiger Name, solange die Datei .hook.js endet' },
+        { id: 'c', text: 'Sie müssen mit "use" beginnen: useMyThing' },
+        { id: 'd', text: 'Großbuchstabe am Anfang wie Komponenten: UseMyThing' },
+      ],
+      correct: 'c',
+      feedback: {
+        ok: 'Richtig! Custom Hooks beginnen immer mit <strong>use</strong> – das ist Konvention und ermöglicht das Linting der Hook-Regeln.',
+        nok: 'Falsch. Custom Hooks müssen mit <strong>use</strong> beginnen (z. B. <code>useLocalStorage</code>), damit React die Hook-Regeln überprüfen kann.',
+      },
+    },
+  ],
+
+  // ── 25.3 useEffect & API Calls ────────────────────────────
+  chapter18: [
+    {
+      question: 'Warum darf die useEffect-Callback-Funktion nicht direkt async sein?',
+      choices: [
+        { id: 'a', text: 'async ist in React generell verboten' },
+        { id: 'b', text: 'Eine async-Funktion gibt ein Promise zurück, aber useEffect erwartet eine Cleanup-Funktion oder undefined' },
+        { id: 'c', text: 'async-Funktionen laufen im falschen Thread' },
+        { id: 'd', text: 'async funktioniert nur mit useCallback' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <code>useEffect(async () => {})</code> würde ein Promise zurückgeben – React interpretiert das nicht als Cleanup-Funktion.',
+        nok: 'Falsch. useEffect erwartet entweder <strong>undefined</strong> oder eine <strong>Cleanup-Funktion</strong> zurück. Ein Promise wäre falsch.',
+      },
+    },
+    {
+      question: 'Was bewirkt ein leeres Dependency-Array [] in useEffect?',
+      choices: [
+        { id: 'a', text: 'useEffect läuft bei jedem Render' },
+        { id: 'b', text: 'useEffect läuft genau einmal nach dem ersten Render (Mount)' },
+        { id: 'c', text: 'useEffect wird niemals ausgeführt' },
+        { id: 'd', text: 'useEffect läuft nur beim Unmount' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <code>useEffect(() => {}, [])</code> läuft einmal beim <strong>Mount</strong> – ideal für einmalige Initialisierungen.',
+        nok: 'Falsch. <code>[]</code> bedeutet: keine Abhängigkeiten, also läuft der Effekt genau <strong>einmal nach dem ersten Render</strong>.',
+      },
+    },
+    {
+      question: 'Wozu dient der AbortController in einem fetch()-useEffect?',
+      choices: [
+        { id: 'a', text: 'Er beschleunigt den API-Call' },
+        { id: 'b', text: 'Er verhindert State-Updates auf unmountierten Komponenten, indem er den fetch abbricht' },
+        { id: 'c', text: 'Er behandelt 404-Fehler automatisch' },
+        { id: 'd', text: 'Er konvertiert die Response zu JSON' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! Der <strong>AbortController</strong> bricht den fetch ab, wenn die Komponente unmountet – kein State-Update auf totem Objekt.',
+        nok: 'Falsch. <code>AbortController</code> wird in der Cleanup-Funktion aufgerufen, um den laufenden <strong>fetch abzubrechen</strong>.',
+      },
+    },
+    {
+      question: 'Was passiert, wenn man das Dependency-Array in useEffect weglässt?',
+      choices: [
+        { id: 'a', text: 'useEffect läuft einmal beim Mount' },
+        { id: 'b', text: 'useEffect wird nach jedem Render ausgeführt' },
+        { id: 'c', text: 'useEffect wird deaktiviert' },
+        { id: 'd', text: 'Es gibt einen Build-Fehler' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! Ohne Dependency-Array läuft <code>useEffect</code> nach <strong>jedem Render</strong> – kann zu Endlosschleifen führen!',
+        nok: 'Falsch. Kein Dependency-Array = Effekt läuft <strong>nach jedem Render</strong>. Das ist selten gewünscht und kann Endlosschleifen erzeugen.',
+      },
+    },
+  ],
+
+  // ── 25.4 React Router ─────────────────────────────────────
+  chapter19: [
+    {
+      question: 'Warum soll man in React Router <Link> statt <a href> für interne Links verwenden?',
+      choices: [
+        { id: 'a', text: '<a href> ist in React nicht erlaubt' },
+        { id: 'b', text: '<Link> verhindert das Neuladen der Seite und aktualisiert nur die URL im Browser' },
+        { id: 'c', text: '<Link> ist schneller, weil es HTTP/2 verwendet' },
+        { id: 'd', text: 'Es gibt keinen funktionalen Unterschied' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <strong>Link</strong> aus react-router-dom aktualisiert nur den Browser-History-Eintrag – kein vollständiges Neuladen.',
+        nok: 'Falsch. Ein normales <code>{"<a href>"}</code> löst einen vollen Seiten-Reload aus. <strong>Link</strong> navigiert client-seitig ohne Reload.',
+      },
+    },
+    {
+      question: 'Wie liest man den URL-Parameter :id aus der Route /users/:id?',
+      choices: [
+        { id: 'a', text: 'const id = useParams.id' },
+        { id: 'b', text: 'const { id } = useParams()' },
+        { id: 'c', text: 'const id = props.params.id' },
+        { id: 'd', text: 'const id = useRouter().id' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <code>const {"{ id }"} = useParams()</code> – useParams ist ein Hook und gibt ein Objekt zurück.',
+        nok: 'Falsch. <code>useParams()</code> ist ein Hook (mit Klammern!) und gibt ein Objekt zurück – Destructuring nötig: <code>const {"{ id }"} = useParams()</code>.',
+      },
+    },
+    {
+      question: 'Was ist der Unterschied zwischen <Link> und <NavLink>?',
+      choices: [
+        { id: 'a', text: 'NavLink ist für externe Links' },
+        { id: 'b', text: 'NavLink fügt automatisch eine active-CSS-Klasse hinzu, wenn die Route aktiv ist' },
+        { id: 'c', text: 'NavLink kann nur in der Navbar verwendet werden' },
+        { id: 'd', text: 'NavLink unterstützt keine dynamischen Routen' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <strong>NavLink</strong> hat einen <code>isActive</code>-State und kann aktive Links automatisch stylen.',
+        nok: 'Falsch. <strong>NavLink</strong> unterscheidet sich durch das <code>isActive</code>-Verhalten – es fügt eine <code>active</code>-Klasse oder einen Style hinzu.',
+      },
+    },
+    {
+      question: 'Wie navigiert man programmatisch nach einer Form-Submission?',
+      choices: [
+        { id: 'a', text: 'window.location.href = "/ziel"' },
+        { id: 'b', text: 'const navigate = useNavigate(); navigate("/ziel")' },
+        { id: 'c', text: '<Redirect to="/ziel" />' },
+        { id: 'd', text: 'router.push("/ziel")' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! <code>useNavigate()</code> gibt eine <code>navigate</code>-Funktion zurück, mit der man programmatisch navigieren kann.',
+        nok: 'Falsch. In React Router v6 verwendet man <code>useNavigate()</code>, um einen <code>navigate</code>-Callback zu bekommen.',
+      },
+    },
+  ],
+
+  // ── 25.5 React Mini-App ───────────────────────────────────
+  chapter20: [
+    {
+      question: 'Welcher Hook sollte für eine teure Array-Filterung verwendet werden, um Re-Render-Performance zu verbessern?',
+      choices: [
+        { id: 'a', text: 'useState' },
+        { id: 'b', text: 'useRef' },
+        { id: 'c', text: 'useMemo' },
+        { id: 'd', text: 'useReducer' },
+      ],
+      correct: 'c',
+      feedback: {
+        ok: 'Richtig! <strong>useMemo</strong> cached den Filterwert und berechnet ihn nur neu, wenn sich Abhängigkeiten ändern.',
+        nok: 'Falsch. <strong>useMemo</strong> ist für gecachte berechnete Werte – ideal für teure Filter- oder Sortierfunktionen.',
+      },
+    },
+    {
+      question: 'Warum darf man State in React nicht direkt mutieren?',
+      choices: [
+        { id: 'a', text: 'State ist readonly in JavaScript' },
+        { id: 'b', text: 'React erkennt Objekt-Mutationen nicht als Änderung und löst keinen Re-Render aus' },
+        { id: 'c', text: 'Mutationen sind generell in modernem JavaScript verboten' },
+        { id: 'd', text: 'Nur wegen Performance-Gründen' },
+      ],
+      correct: 'b',
+      feedback: {
+        ok: 'Richtig! React vergleicht Referenzen – wenn dieselbe Referenz verändert wird, sieht React keine Änderung und rendert nicht neu.',
+        nok: 'Falsch. React vergleicht Object-Referenzen. Eine direkte Mutation ändert nicht die Referenz – kein Re-Render wird ausgelöst.',
+      },
+    },
+    {
+      question: 'Welches Muster wird beim Löschen eines Elements aus einem State-Array verwendet?',
+      choices: [
+        { id: 'a', text: 'items.splice(index, 1)' },
+        { id: 'b', text: 'delete items[index]' },
+        { id: 'c', text: 'setItems(items.filter(i => i.id !== id))' },
+        { id: 'd', text: 'items.length = items.length - 1' },
+      ],
+      correct: 'c',
+      feedback: {
+        ok: 'Richtig! <code>filter()</code> gibt ein <strong>neues Array</strong> zurück – React erkennt die neue Referenz und rendert neu.',
+        nok: 'Falsch. <strong>splice</strong> und <strong>delete</strong> mutieren das bestehende Array. Korrekt ist <code>filter()</code>, das ein neues Array zurückgibt.',
+      },
+    },
+    {
+      question: 'In welcher Datei wird BrowserRouter typischerweise in einem Vite-React-Projekt eingebunden?',
+      choices: [
+        { id: 'a', text: 'App.jsx' },
+        { id: 'b', text: 'index.html' },
+        { id: 'c', text: 'main.jsx' },
+        { id: 'd', text: 'vite.config.js' },
+      ],
+      correct: 'c',
+      feedback: {
+        ok: 'Richtig! <code>main.jsx</code> ist der Einstiegspunkt – dort wird <code>BrowserRouter</code> um die gesamte App gewickelt.',
+        nok: 'Falsch. <code>BrowserRouter</code> gehört in <strong>main.jsx</strong>, damit die gesamte App Zugriff auf den Router-Kontext hat.',
+      },
+    },
+  ],
 };

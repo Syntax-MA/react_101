@@ -1334,3 +1334,390 @@ export const dragDropChapter10 = {
     { id: 'children', label: '24.2 – Untergeordnete Elemente per Containment einbetten' },
   ],
 };
+
+// ── 25.1 Lückentext: CSS Module ──────────────────────────
+export const fillChapter16 = {
+  title: 'CSS Module Lückentext',
+  instruction: 'Klicke zuerst ein Wort aus der Wortliste, dann die passende Lücke (oder umgekehrt).',
+  lines: [
+    [
+      { type: 'cmt', value: '// CSS Module importieren:' },
+    ],
+    [
+      { type: 'kw', value: 'import' },
+      { type: 'text', value: ' ' },
+      { type: 'blank', id: 0, answer: 'styles' },
+      { type: 'text', value: ' ' },
+      { type: 'kw', value: 'from' },
+      { type: 'text', value: ' ' },
+      { type: 'str', value: "'./Card.module.css'" },
+      { type: 'text', value: ';' },
+    ],
+    [
+      { type: 'text', value: '' },
+    ],
+    [
+      { type: 'kw', value: 'function' },
+      { type: 'text', value: ' ' },
+      { type: 'fn', value: 'Card' },
+      { type: 'text', value: '({ title }) {' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'kw', value: 'return' },
+      { type: 'text', value: ' (' },
+    ],
+    [
+      { type: 'indent', value: '    ' },
+      { type: 'jsx', value: '<div' },
+      { type: 'text', value: ' ' },
+      { type: 'var', value: 'className' },
+      { type: 'text', value: '={' },
+      { type: 'blank', id: 1, answer: 'styles' },
+      { type: 'text', value: '.' },
+      { type: 'blank', id: 2, answer: 'card' },
+      { type: 'text', value: '}>' },
+    ],
+    [
+      { type: 'indent', value: '      ' },
+      { type: 'jsx', value: '<h2' },
+      { type: 'text', value: ' ' },
+      { type: 'var', value: 'className' },
+      { type: 'text', value: '={styles.' },
+      { type: 'blank', id: 3, answer: 'title' },
+      { type: 'text', value: '}>{title}</h2>' },
+    ],
+    [
+      { type: 'indent', value: '    ' },
+      { type: 'jsx', value: '</div>' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'text', value: ');' },
+    ],
+    [
+      { type: 'text', value: '}' },
+    ],
+  ],
+  wordBank: ['styles', 'card', 'title', 'className', 'module', 'import'],
+};
+
+// ── 25.1 Drag & Drop: Styling-Ansätze ────────────────────
+export const dragDropChapter16 = {
+  title: 'Styling-Ansätze zuordnen',
+  instruction: 'Ordne jeden Styling-Ansatz der passenden Beschreibung zu.',
+  items: [
+    { id: 'indexcss',    label: 'index.css' },
+    { id: 'appcss',      label: 'App.css' },
+    { id: 'cssmodule',   label: 'CSS Module' },
+    { id: 'tailwind',    label: 'Tailwind CSS' },
+  ],
+  targets: [
+    { id: 'indexcss',    label: 'Globale Basis-Styles (Reset, Schrift) für die gesamte App' },
+    { id: 'appcss',      label: 'Täuschend global – wird in App.jsx importiert, wirkt aber global' },
+    { id: 'cssmodule',   label: 'Lokal gescoped per Komponente – automatisch generierte Klassen-Hashes' },
+    { id: 'tailwind',    label: 'Utility-First – fertige Klassen direkt im JSX, kein eigenes CSS nötig' },
+  ],
+};
+
+// ── 25.2 Lückentext: useCallback & useMemo ───────────────
+export const fillChapter17 = {
+  title: 'useCallback & useMemo Lückentext',
+  instruction: 'Klicke zuerst ein Wort aus der Wortliste, dann die passende Lücke (oder umgekehrt).',
+  lines: [
+    [
+      { type: 'kw', value: 'import' },
+      { type: 'text', value: ' { useState, ' },
+      { type: 'blank', id: 0, answer: 'useCallback' },
+      { type: 'text', value: ', ' },
+      { type: 'blank', id: 1, answer: 'useMemo' },
+      { type: 'text', value: " } from 'react';" },
+    ],
+    [
+      { type: 'text', value: '' },
+    ],
+    [
+      { type: 'kw', value: 'function' },
+      { type: 'text', value: ' ' },
+      { type: 'fn', value: 'App' },
+      { type: 'text', value: '() {' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'kw', value: 'const' },
+      { type: 'text', value: ' [count, setCount] = useState(0);' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'kw', value: 'const' },
+      { type: 'text', value: ' doubled = ' },
+      { type: 'blank', id: 2, answer: 'useMemo' },
+      { type: 'text', value: '(() => count * 2, [' },
+      { type: 'blank', id: 3, answer: 'count' },
+      { type: 'text', value: ']);' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'kw', value: 'const' },
+      { type: 'text', value: ' handleClick = ' },
+      { type: 'blank', id: 4, answer: 'useCallback' },
+      { type: 'text', value: '(() => setCount(c => c + 1), []);' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'kw', value: 'return' },
+      { type: 'text', value: ' <button onClick={handleClick}>{' },
+      { type: 'blank', id: 5, answer: 'doubled' },
+      { type: 'text', value: '}</button>;' },
+    ],
+    [
+      { type: 'text', value: '}' },
+    ],
+  ],
+  wordBank: ['useCallback', 'useMemo', 'count', 'doubled', 'useRef', 'useState'],
+};
+
+// ── 25.2 Drag & Drop: Hooks zuordnen ─────────────────────
+export const dragDropChapter17 = {
+  title: 'React Hooks zuordnen',
+  instruction: 'Ordne jeden Hook dem passenden Anwendungsfall zu.',
+  items: [
+    { id: 'usecallback', label: 'useCallback' },
+    { id: 'usememo',     label: 'useMemo' },
+    { id: 'useref',      label: 'useRef' },
+    { id: 'custom',      label: 'Custom Hook' },
+  ],
+  targets: [
+    { id: 'usecallback', label: 'Stabile Funktionsreferenz für memoized Kinder' },
+    { id: 'usememo',     label: 'Gecachter berechneter Wert (z.B. teures Filtern)' },
+    { id: 'useref',      label: 'DOM-Zugriff oder Instanzvariable ohne Re-Render' },
+    { id: 'custom',      label: 'Wiederverwendbare Logik extrahieren (beginnt mit use)' },
+  ],
+};
+
+// ── 25.3 Lückentext: useEffect ───────────────────────────
+export const fillChapter18 = {
+  title: 'useEffect Lückentext',
+  instruction: 'Klicke zuerst ein Wort aus der Wortliste, dann die passende Lücke (oder umgekehrt).',
+  lines: [
+    [
+      { type: 'kw', value: 'import' },
+      { type: 'text', value: ' { ' },
+      { type: 'blank', id: 0, answer: 'useEffect' },
+      { type: 'text', value: ', useState } from ' },
+      { type: 'str', value: "'react'" },
+      { type: 'text', value: ';' },
+    ],
+    [
+      { type: 'text', value: '' },
+    ],
+    [
+      { type: 'fn', value: 'useEffect' },
+      { type: 'text', value: '(() => {' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'kw', value: 'async' },
+      { type: 'text', value: ' ' },
+      { type: 'kw', value: 'function' },
+      { type: 'text', value: ' ' },
+      { type: 'blank', id: 1, answer: 'fetchData' },
+      { type: 'text', value: '() {' },
+    ],
+    [
+      { type: 'indent', value: '    ' },
+      { type: 'kw', value: 'const' },
+      { type: 'text', value: ' res = ' },
+      { type: 'kw', value: 'await' },
+      { type: 'text', value: ' ' },
+      { type: 'blank', id: 2, answer: 'fetch' },
+      { type: 'text', value: '(url);' },
+    ],
+    [
+      { type: 'indent', value: '    ' },
+      { type: 'kw', value: 'const' },
+      { type: 'text', value: ' data = ' },
+      { type: 'kw', value: 'await' },
+      { type: 'text', value: ' res.' },
+      { type: 'blank', id: 3, answer: 'json' },
+      { type: 'text', value: '();' },
+    ],
+    [
+      { type: 'indent', value: '    ' },
+      { type: 'blank', id: 4, answer: 'setData' },
+      { type: 'text', value: '(data);' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'text', value: '}' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'fn', value: 'fetchData' },
+      { type: 'text', value: '();' },
+    ],
+    [
+      { type: 'text', value: '}, [' },
+      { type: 'blank', id: 5, answer: 'url' },
+      { type: 'text', value: ']);' },
+    ],
+  ],
+  wordBank: ['useEffect', 'fetchData', 'fetch', 'json', 'setData', 'url', 'async'],
+};
+
+// ── 25.3 Drag & Drop: Dependency Array ───────────────────
+export const dragDropChapter18 = {
+  title: 'useEffect Dependency Array',
+  instruction: 'Ordne das Dependency-Array dem korrekten Verhalten zu.',
+  items: [
+    { id: 'empty',    label: '[]' },
+    { id: 'withvar',  label: '[userId]' },
+    { id: 'none',     label: '(kein Array)' },
+    { id: 'cleanup',  label: 'return () => ...' },
+  ],
+  targets: [
+    { id: 'empty',    label: 'Läuft genau einmal nach dem ersten Render (Mount)' },
+    { id: 'withvar',  label: 'Läuft bei Mount und jedes Mal wenn userId sich ändert' },
+    { id: 'none',     label: 'Läuft nach jedem Render – Vorsicht: Endlosschleife möglich!' },
+    { id: 'cleanup',  label: 'Wird beim Unmount ausgeführt – z.B. AbortController.abort()' },
+  ],
+};
+
+// ── 25.4 Lückentext: React Router ────────────────────────
+export const fillChapter19 = {
+  title: 'React Router Lückentext',
+  instruction: 'Klicke zuerst ein Wort aus der Wortliste, dann die passende Lücke (oder umgekehrt).',
+  lines: [
+    [
+      { type: 'kw', value: 'import' },
+      { type: 'text', value: ' { ' },
+      { type: 'blank', id: 0, answer: 'Routes' },
+      { type: 'text', value: ', ' },
+      { type: 'blank', id: 1, answer: 'Route' },
+      { type: 'text', value: ", Link } from 'react-router-dom';" },
+    ],
+    [
+      { type: 'text', value: '' },
+    ],
+    [
+      { type: 'jsx', value: '<Routes>' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'jsx', value: '<Route' },
+      { type: 'text', value: ' path="/" element={<' },
+      { type: 'blank', id: 2, answer: 'Home' },
+      { type: 'text', value: ' />} />' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'jsx', value: '<Route' },
+      { type: 'text', value: ' path="/users/:' },
+      { type: 'blank', id: 3, answer: 'id' },
+      { type: 'text', value: '" element={<Detail />} />' },
+    ],
+    [
+      { type: 'jsx', value: '</Routes>' },
+    ],
+    [
+      { type: 'text', value: '' },
+    ],
+    [
+      { type: 'kw', value: 'const' },
+      { type: 'text', value: ' { ' },
+      { type: 'blank', id: 4, answer: 'id' },
+      { type: 'text', value: ' } = ' },
+      { type: 'blank', id: 5, answer: 'useParams' },
+      { type: 'text', value: '();' },
+    ],
+  ],
+  wordBank: ['Routes', 'Route', 'Home', 'id', 'useParams', 'useNavigate', 'Link'],
+};
+
+// ── 25.4 Drag & Drop: Router-Komponenten ─────────────────
+export const dragDropChapter19 = {
+  title: 'React Router Komponenten zuordnen',
+  instruction: 'Ordne jede Komponente oder jeden Hook der passenden Funktion zu.',
+  items: [
+    { id: 'browserrouter', label: 'BrowserRouter' },
+    { id: 'routes',        label: 'Routes' },
+    { id: 'link',          label: 'Link' },
+    { id: 'useparams',     label: 'useParams' },
+    { id: 'usenavigate',   label: 'useNavigate' },
+  ],
+  targets: [
+    { id: 'browserrouter', label: 'Router-Kontext für die gesamte App (in main.jsx)' },
+    { id: 'routes',        label: 'Container – wählt nur die passende Route aus' },
+    { id: 'link',          label: 'Interne Navigation ohne Seiten-Reload' },
+    { id: 'useparams',     label: 'URL-Parameter (z.B. :id) als Objekt auslesen' },
+    { id: 'usenavigate',   label: 'Programmatische Navigation nach Events' },
+  ],
+};
+
+// ── 25.5 Lückentext: React Mini-App ──────────────────────
+export const fillChapter20 = {
+  title: 'React Mini-App Lückentext',
+  instruction: 'Klicke zuerst ein Wort aus der Wortliste, dann die passende Lücke (oder umgekehrt).',
+  lines: [
+    [
+      { type: 'cmt', value: '// Item zur Liste hinzufügen (immutable):' },
+    ],
+    [
+      { type: 'kw', value: 'function' },
+      { type: 'text', value: ' addItem(text) {' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'blank', id: 0, answer: 'setItems' },
+      { type: 'text', value: '([...' },
+      { type: 'blank', id: 1, answer: 'items' },
+      { type: 'text', value: ', { id: Date.now(), text }]);' },
+    ],
+    [
+      { type: 'text', value: '}' },
+    ],
+    [
+      { type: 'text', value: '' },
+    ],
+    [
+      { type: 'cmt', value: '// Item löschen:' },
+    ],
+    [
+      { type: 'kw', value: 'function' },
+      { type: 'text', value: ' deleteItem(id) {' },
+    ],
+    [
+      { type: 'indent', value: '  ' },
+      { type: 'blank', id: 2, answer: 'setItems' },
+      { type: 'text', value: '(' },
+      { type: 'blank', id: 3, answer: 'items' },
+      { type: 'text', value: '.' },
+      { type: 'blank', id: 4, answer: 'filter' },
+      { type: 'text', value: '(i => i.id !== id));' },
+    ],
+    [
+      { type: 'text', value: '}' },
+    ],
+  ],
+  wordBank: ['setItems', 'items', 'filter', 'map', 'push', 'useState'],
+};
+
+// ── 25.5 Drag & Drop: React II Woche-Wiederholung ────────
+export const dragDropChapter20 = {
+  title: 'React Woche 25 – Konzepte zuordnen',
+  instruction: 'Ordne jeden Begriff dem richtigen Kapitel aus Woche 25 zu.',
+  items: [
+    { id: 'cssmodule',   label: 'CSS Module' },
+    { id: 'usememo',     label: 'useMemo' },
+    { id: 'abortctrl',   label: 'AbortController' },
+    { id: 'navlink',     label: 'NavLink' },
+    { id: 'customhook',  label: 'Custom Hook' },
+  ],
+  targets: [
+    { id: 'cssmodule',   label: '25.1 – Lokal gescoped CSS ohne Namenskonflikte' },
+    { id: 'usememo',     label: '25.2 – Gecachter Berechnungswert aus teurem Ausdruck' },
+    { id: 'abortctrl',   label: '25.3 – fetch-Request beim Unmount abbrechen' },
+    { id: 'navlink',     label: '25.4 – Link mit automatisch aktivem CSS-Styling' },
+    { id: 'customhook',  label: '25.2 – Eigener Hook zum Kapseln von Logik (beginnt mit use)' },
+  ],
+};

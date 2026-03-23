@@ -1252,3 +1252,433 @@ export const bugChapter15 = {
     },
   ],
 };
+
+// ── Kapitel 16: Styling Patterns & CSS ────────────────────────────────────────
+export const bugChapter16 = {
+  title: '25.1 · Styling Patterns & CSS',
+  exercises: [
+    {
+      id: 1,
+      title: 'CSS-Modul falsch benannt',
+      category: 'react',
+      description:
+        'Die Komponente importiert ein CSS-Modul, aber die Datei heißt falsch. Der Import schlägt fehl. Finde und behebe das Problem.',
+      buggyCode:
+`// Datei: Card.jsx
+import styles from './Card.css';  // Bug!
+
+function Card({ title }) {
+  return (
+    <div className={styles.card}>
+      <h2 className={styles.title}>{title}</h2>
+    </div>
+  );
+}`,
+      hint: 'CSS Module haben eine spezielle Dateiendung.',
+      explanation:
+        'CSS Module müssen mit .module.css enden, nicht mit .css. Nur dann behandelt Vite/CRA sie als Module mit lokalem Scope. Richtig: import styles from \'./Card.module.css\'.',
+      tests: [
+        { label: 'Import endet auf .module.css', check: c => new RegExp('\\.module\\.css').test(c) },
+        { label: 'styles.card wird verwendet', check: c => new RegExp('styles\\.card').test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'className als String statt Ausdruck',
+      category: 'react',
+      description:
+        'Die Klasse wird als reiner String übergeben statt das styles-Objekt zu nutzen. Die Styles werden nicht angewendet. Behebe den Fehler.',
+      buggyCode:
+`import styles from './Button.module.css';
+
+function Button({ label }) {
+  return (
+    <button className="styles.btn">
+      {label}
+    </button>
+  );
+}`,
+      hint: 'In JSX müssen JavaScript-Ausdrücke in geschweifte Klammern.',
+      explanation:
+        'className="styles.btn" ist ein String – React gibt genau "styles.btn" als Klasse weiter, nicht den tatsächlichen gehashten Klassennamen. Richtig: className={styles.btn}.',
+      tests: [
+        { label: 'className mit geschweiften Klammern', check: c => new RegExp('className=\\{styles\\.btn\\}').test(c) },
+        { label: 'Kein String "styles.btn"', check: c => !new RegExp('className="styles\\.btn"').test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Tailwind dynamische Klasse mit Interpolation',
+      category: 'react',
+      description:
+        'Die Farbe soll dynamisch sein, aber Tailwind-Klassen dürfen nicht mit Template Literals zusammengesetzt werden. Finde das Problem.',
+      buggyCode:
+`function Alert({ type }) {
+  // type ist "red" oder "green"
+  return (
+    <div className={\`bg-\${type}-500 text-white p-4\`}>
+      Hinweis
+    </div>
+  );
+}`,
+      hint: 'Tailwind generiert nur Klassen, die komplett im Code vorhanden sind.',
+      explanation:
+        'Tailwind scannt den Quellcode nach vollständigen Klassenstrings. bg-${type}-500 ist kein vollständiger Klassenname – Tailwind nimmt ihn nicht ins Bundle auf. Lösung: vollständige Klassen verwenden, z.B. mit einem Lookup-Objekt: const colors = { red: "bg-red-500", green: "bg-green-500" }.',
+      tests: [
+        { label: 'Keine Template-Literal-Interpolation für Tailwind-Farbe', check: c => !new RegExp('bg-\\$\\{').test(c) },
+        { label: 'Vollständige Klassenstrings vorhanden', check: c => new RegExp('bg-red-|bg-green-').test(c) },
+      ],
+    },
+  ],
+};
+
+// ── Kapitel 17: React Hooks ────────────────────────────────────────────────────
+export const bugChapter17 = {
+  title: '25.2 · React Hooks',
+  exercises: [
+    {
+      id: 1,
+      title: 'useCallback ohne Dependency Array',
+      category: 'react',
+      description:
+        'Die handleClick-Funktion soll stabil bleiben, wird aber bei jedem Render neu erstellt. Finde und behebe den Fehler.',
+      buggyCode:
+`import { useCallback, useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => {
+    setCount(count + 1);
+  });  // Bug: fehlendes Dependency Array!
+
+  return <button onClick={handleClick}>{count}</button>;
+}`,
+      hint: 'useCallback braucht ein zweites Argument.',
+      explanation:
+        'useCallback ohne Dependency Array erstellt die Funktion bei jedem Render neu – der Zweck der Optimierung wird verfehlt. Richtig: useCallback(() => { setCount(count + 1); }, [count]) oder mit funktionalem Update: useCallback(() => setCount(c => c + 1), []).',
+      tests: [
+        { label: 'Dependency Array vorhanden', check: c => new RegExp('useCallback\\([\\s\\S]*?,\\s*\\[').test(c) },
+        { label: 'useCallback noch vorhanden', check: c => new RegExp('useCallback').test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'useMemo ohne return',
+      category: 'react',
+      description:
+        'useMemo soll die Summe berechnen, gibt aber undefined zurück. Was fehlt?',
+      buggyCode:
+`import { useMemo } from 'react';
+
+function Total({ numbers }) {
+  const sum = useMemo(() => {
+    const result = numbers.reduce((a, b) => a + b, 0);
+    // Bug: kein return!
+  }, [numbers]);
+
+  return <p>Summe: {sum}</p>;
+}`,
+      hint: 'Was gibt die Callback-Funktion zurück?',
+      explanation:
+        'Die Callback-Funktion in useMemo muss den berechneten Wert explizit zurückgeben. Ohne return ist der Rückgabewert undefined. Richtig: return numbers.reduce((a, b) => a + b, 0);',
+      tests: [
+        { label: 'return-Statement vorhanden', check: c => new RegExp('return[^;]+reduce').test(c) },
+        { label: 'useMemo noch vorhanden', check: c => new RegExp('useMemo').test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'useRef .value statt .current',
+      category: 'react',
+      description:
+        'Der Klick auf "Fokussieren" soll das Input-Feld fokussieren. Es passiert aber nichts. Finde den Fehler.',
+      buggyCode:
+`import { useRef } from 'react';
+
+function FocusInput() {
+  const inputRef = useRef(null);
+
+  function handleFocus() {
+    inputRef.value.focus();  // Bug!
+  }
+
+  return (
+    <>
+      <input ref={inputRef} type="text" />
+      <button onClick={handleFocus}>Fokussieren</button>
+    </>
+  );
+}`,
+      hint: 'Wie greift man auf den Wert eines Refs zu?',
+      explanation:
+        'Refs speichern ihren Wert immer unter .current, nicht .value. inputRef.value ist undefined. Richtig: inputRef.current.focus().',
+      tests: [
+        { label: 'inputRef.current verwendet', check: c => new RegExp('inputRef\\.current').test(c) },
+        { label: 'Kein .value auf Ref', check: c => !new RegExp('inputRef\\.value').test(c) },
+      ],
+    },
+  ],
+};
+
+// ── Kapitel 18: useEffect & API Calls ─────────────────────────────────────────
+export const bugChapter18 = {
+  title: '25.3 · useEffect & API Calls',
+  exercises: [
+    {
+      id: 1,
+      title: 'async direkt als useEffect-Callback',
+      category: 'react',
+      description:
+        'Der Fetch soll beim Mount ausgeführt werden. Der Code wirft aber eine React-Warnung und verhält sich falsch. Finde den Fehler.',
+      buggyCode:
+`import { useEffect, useState } from 'react';
+
+function UserList() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(async () => {  // Bug!
+    const res = await fetch('/api/users');
+    const data = await res.json();
+    setUsers(data);
+  }, []);
+
+  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
+}`,
+      hint: 'useEffect-Callbacks dürfen nicht direkt async sein.',
+      explanation:
+        'async-Funktionen geben immer ein Promise zurück. useEffect erwartet entweder undefined oder eine Cleanup-Funktion – kein Promise. Lösung: eine innere async-Funktion definieren und sofort aufrufen.',
+      tests: [
+        { label: 'useEffect-Callback ist nicht direkt async', check: c => !new RegExp('useEffect\\(\\s*async').test(c) },
+        { label: 'Innere async-Funktion vorhanden', check: c => new RegExp('async function|const \\w+ = async').test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Fehlende Dependencies – Infinite Loop',
+      category: 'react',
+      description:
+        'Der fetch soll bei jeder userId-Änderung ausgeführt werden. Stattdessen läuft er in einer Endlosschleife. Was fehlt?',
+      buggyCode:
+`import { useEffect, useState } from 'react';
+
+function UserDetail({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch(\`/api/users/\${userId}\`)
+      .then(res => res.json())
+      .then(data => setUser(data));
+  });  // Bug: kein Dependency Array!
+
+  if (!user) return <p>Lädt...</p>;
+  return <p>{user.name}</p>;
+}`,
+      hint: 'Ohne Dependency Array läuft useEffect nach jedem Render.',
+      explanation:
+        'Ohne Dependency Array läuft useEffect nach jedem Render. setUser() löst einen neuen Render aus, useEffect läuft wieder → Endlosschleife. Fix: [userId] als Dependency hinzufügen.',
+      tests: [
+        { label: 'Dependency Array vorhanden', check: c => new RegExp('useEffect\\([\\s\\S]*?,\\s*\\[').test(c) },
+        { label: 'userId als Dependency', check: c => new RegExp('\\[\\s*userId\\s*\\]').test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Kein Cleanup bei Event-Listener',
+      category: 'react',
+      description:
+        'Der Event-Listener auf window wird nicht entfernt wenn die Komponente unmountet. Das kann zu Memory Leaks führen.',
+      buggyCode:
+`import { useEffect, useState } from 'react';
+
+function WindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    function handleResize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', handleResize);
+    // Bug: kein Cleanup!
+  }, []);
+
+  return <p>Breite: {width}px</p>;
+}`,
+      hint: 'useEffect kann eine Cleanup-Funktion zurückgeben.',
+      explanation:
+        'Event-Listener müssen beim Unmount entfernt werden. Die Cleanup-Funktion wird von useEffect zurückgegeben: return () => window.removeEventListener("resize", handleResize).',
+      tests: [
+        { label: 'removeEventListener vorhanden', check: c => new RegExp('removeEventListener').test(c) },
+        { label: 'Cleanup-Funktion wird returned', check: c => new RegExp('return\\s*\\(\\s*\\)\\s*=>').test(c) },
+      ],
+    },
+  ],
+};
+
+// ── Kapitel 19: React Router ───────────────────────────────────────────────────
+export const bugChapter19 = {
+  title: '25.4 · React Router',
+  exercises: [
+    {
+      id: 1,
+      title: '<a href> statt <Link to>',
+      category: 'react',
+      description:
+        'Die Navigation lädt bei jedem Klick die Seite komplett neu. Was ist falsch?',
+      buggyCode:
+`function Navbar() {
+  return (
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">Über uns</a>
+      <a href="/users">User</a>
+    </nav>
+  );
+}`,
+      hint: 'React Router hat eine eigene Navigations-Komponente.',
+      explanation:
+        'Normale <a href>-Tags lösen einen vollständigen Seiten-Reload aus. React Router stellt <Link to> bereit, das nur die URL aktualisiert ohne die Seite neu zu laden.',
+      tests: [
+        { label: 'Link statt a-Tag verwendet', check: c => new RegExp('<Link').test(c) },
+        { label: 'to= statt href= verwendet', check: c => new RegExp('to=').test(c) && !new RegExp('<a\\s+href').test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Route ohne Routes-Wrapper',
+      category: 'react',
+      description:
+        'Die Routen werden definiert, aber React Router wirft einen Fehler. Was fehlt?',
+      buggyCode:
+`import { Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+
+function App() {
+  return (
+    <div>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
+    </div>
+  );
+}`,
+      hint: 'Route-Elemente müssen in einem Container stehen.',
+      explanation:
+        'In React Router v6 müssen alle <Route>-Elemente von einem <Routes>-Container umschlossen sein. Routes wählt immer nur die passende Route aus.',
+      tests: [
+        { label: 'Routes-Wrapper vorhanden', check: c => new RegExp('<Routes').test(c) },
+        { label: 'Routes importiert', check: c => new RegExp('Routes').test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'useParams ohne Destructuring',
+      category: 'react',
+      description:
+        'userId ist undefined, obwohl die Route /users/:id aufgerufen wurde. Was ist falsch?',
+      buggyCode:
+`import { useParams } from 'react-router-dom';
+
+function UserDetail() {
+  const userId = useParams();  // Bug!
+
+  return <h1>User ID: {userId}</h1>;
+}`,
+      hint: 'useParams() gibt ein Objekt zurück.',
+      explanation:
+        'useParams() gibt ein Objekt mit allen URL-Parametern zurück, nicht direkt den Wert. Richtig: const { id } = useParams() – der Schlüssel entspricht dem Parameternamen in der Route (:id).',
+      tests: [
+        { label: 'Destructuring von useParams()', check: c => new RegExp('const\\s*\\{\\s*\\w+\\s*\\}\\s*=\\s*useParams').test(c) },
+        { label: 'useParams noch vorhanden', check: c => new RegExp('useParams').test(c) },
+      ],
+    },
+  ],
+};
+
+// ── Kapitel 20: React Mini-App ─────────────────────────────────────────────────
+export const bugChapter20 = {
+  title: '25.5 · React Mini-App',
+  exercises: [
+    {
+      id: 1,
+      title: 'State-Mutation statt neues Array',
+      category: 'react',
+      description:
+        'Das Hinzufügen eines neuen Items zur Liste löst keinen Re-Render aus. React "sieht" die Änderung nicht. Finde den Fehler.',
+      buggyCode:
+`import { useState } from 'react';
+
+function TodoList() {
+  const [todos, setTodos] = useState([]);
+
+  function addTodo(text) {
+    todos.push({ id: Date.now(), text });  // Bug!
+    setTodos(todos);
+  }
+
+  return (
+    <ul>{todos.map(t => <li key={t.id}>{t.text}</li>)}</ul>
+  );
+}`,
+      hint: 'React vergleicht Objekt-Referenzen.',
+      explanation:
+        'todos.push() mutiert das bestehende Array – die Referenz bleibt dieselbe. React sieht keinen Unterschied und rendert nicht neu. Richtig: setTodos([...todos, { id: Date.now(), text }]).',
+      tests: [
+        { label: 'Spread-Operator für neues Array', check: c => new RegExp('\\.\\.\\.(todos|prev)').test(c) },
+        { label: 'Kein .push() auf State', check: c => !new RegExp('todos\\.push').test(c) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Fehlender key in .map()',
+      category: 'react',
+      description:
+        'Die Liste rendert zwar, aber React gibt eine Warning in der Konsole aus. Was fehlt?',
+      buggyCode:
+`function ItemList({ items }) {
+  return (
+    <ul>
+      {items.map(item => (
+        <li>{item.name}</li>
+      ))}
+    </ul>
+  );
+}`,
+      hint: 'React braucht eine eindeutige Kennung für jedes Listen-Element.',
+      explanation:
+        'Jedes Element in einer mit .map() gerenderten Liste braucht ein eindeutiges key-Prop. React nutzt es für effizienten DOM-Abgleich. Richtig: <li key={item.id}>{item.name}</li>.',
+      tests: [
+        { label: 'key-Prop vorhanden', check: c => new RegExp('key=\\{').test(c) },
+        { label: 'key hat einen sinnvollen Wert', check: c => new RegExp('key=\\{item\\.id\\}|key=\\{item\\.name\\}').test(c) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'useEffect ohne Dependency Array',
+      category: 'react',
+      description:
+        'Der Fetch soll nur einmal beim ersten Render ausgeführt werden, läuft aber bei jedem Render. Was fehlt?',
+      buggyCode:
+`import { useEffect, useState } from 'react';
+
+function MovieList() {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    fetch('https://api.example.com/movies')
+      .then(r => r.json())
+      .then(data => setMovies(data));
+  });  // Bug!
+
+  return <ul>{movies.map(m => <li key={m.id}>{m.title}</li>)}</ul>;
+}`,
+      hint: 'Einmaliges Ausführen erfordert ein bestimmtes zweites Argument.',
+      explanation:
+        'Ohne Dependency Array läuft useEffect nach jedem Render. setMovies() löst erneut einen Render aus → Endlosschleife. Fix: leeres Array [] als zweites Argument → läuft nur beim Mount.',
+      tests: [
+        { label: 'Leeres Dependency Array []', check: c => new RegExp('useEffect\\([\\s\\S]*?,\\s*\\[\\s*\\]').test(c) },
+        { label: 'useEffect noch vorhanden', check: c => new RegExp('useEffect').test(c) },
+      ],
+    },
+  ],
+};

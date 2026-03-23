@@ -4060,3 +4060,510 @@ const [ /* ... */ ] = colors;
     },
   ],
 };
+
+// ══════════════════════════════════════════════════════
+//  KAPITEL 16 – Styling Patterns & CSS
+// ══════════════════════════════════════════════════════
+export const labChapter16 = {
+  title: '🧪 Übungslab – Styling Patterns & CSS',
+  exercises: [
+    {
+      id: 1,
+      title: 'CSS-Modul importieren',
+      description:
+        'Importiere ein CSS-Modul korrekt und verwende eine Klasse aus dem Modul. ' +
+        'Die Datei heißt <code>Card.module.css</code> und enthält die Klasse <code>.card</code>.',
+      filename: 'Card.jsx',
+      startCode:
+`// Importiere das CSS-Modul (Dateiname: Card.module.css)
+
+
+function Card({ children }) {
+  return (
+    // Verwende styles.card als className
+    <div>
+      {children}
+    </div>
+  );
+}`,
+      hint: 'import styles from \'./Card.module.css\'; dann className={styles.card}',
+      tests: [
+        { label: 'CSS-Modul importiert',           check: code => new RegExp('import\\s+styles\\s+from.*\\.module\\.css').test(code) },
+        { label: 'className mit styles.card',      check: code => new RegExp('className=\\{styles\\.card\\}').test(code) },
+        { label: 'Keine String-Klasse "card"',     check: code => !new RegExp('className="card"').test(code) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Tailwind-Klassen anwenden',
+      description:
+        'Gestalte eine <code>Badge</code>-Komponente mit Tailwind. ' +
+        'Die Badge soll blauen Hintergrund (<code>bg-blue-500</code>), weißen Text (<code>text-white</code>), ' +
+        'kleines Padding (<code>px-2 py-1</code>) und abgerundete Ecken (<code>rounded-full</code>) haben.',
+      filename: 'Badge.jsx',
+      startCode:
+`function Badge({ label }) {
+  return (
+    // Tailwind-Klassen hinzufügen:
+    <span>
+      {label}
+    </span>
+  );
+}`,
+      hint: 'className="bg-blue-500 text-white px-2 py-1 rounded-full"',
+      tests: [
+        { label: 'bg-blue-500 vorhanden',     check: code => new RegExp('bg-blue-500').test(code) },
+        { label: 'text-white vorhanden',      check: code => new RegExp('text-white').test(code) },
+        { label: 'rounded vorhanden',         check: code => new RegExp('rounded').test(code) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Dynamisches Styling',
+      description:
+        'Erweitere eine <code>Alert</code>-Komponente mit dynamischem Styling. ' +
+        'Bei <code>type="error"</code> soll <code>bg-red-100</code> verwendet werden, ' +
+        'bei <code>type="success"</code> soll <code>bg-green-100</code> verwendet werden.',
+      filename: 'Alert.jsx',
+      startCode:
+`function Alert({ type, message }) {
+  // Wähle die richtige Klasse basierend auf type:
+  const bgClass = '';  // 'bg-red-100' oder 'bg-green-100'
+
+  return (
+    <div className={bgClass}>
+      {message}
+    </div>
+  );
+}`,
+      hint: 'const bgClass = type === "error" ? "bg-red-100" : "bg-green-100";',
+      tests: [
+        { label: 'Ternary oder Lookup-Objekt verwendet', check: code => new RegExp('type\\s*===|\\[type\\]').test(code) },
+        { label: 'bg-red-100 vorhanden',                check: code => new RegExp('bg-red-100').test(code) },
+        { label: 'bg-green-100 vorhanden',              check: code => new RegExp('bg-green-100').test(code) },
+      ],
+    },
+  ],
+};
+
+// ══════════════════════════════════════════════════════
+//  KAPITEL 17 – React Hooks
+// ══════════════════════════════════════════════════════
+export const labChapter17 = {
+  title: '🧪 Übungslab – React Hooks',
+  exercises: [
+    {
+      id: 1,
+      title: 'useCallback einsetzen',
+      description:
+        'Stabilisiere die <code>handleAdd</code>-Funktion mit <code>useCallback</code>, ' +
+        'damit sie nicht bei jedem Render neu erstellt wird. Gib das korrekte Dependency Array an.',
+      filename: 'AddButton.jsx',
+      startCode:
+`import { useState, useCallback } from 'react';
+
+function AddButton() {
+  const [count, setCount] = useState(0);
+
+  // Mit useCallback wrappen:
+  const handleAdd = () => {
+    setCount(c => c + 1);
+  };
+
+  return <button onClick={handleAdd}>{count}</button>;
+}`,
+      hint: 'const handleAdd = useCallback(() => { setCount(c => c + 1); }, []);',
+      tests: [
+        { label: 'useCallback verwendet',          check: code => new RegExp('useCallback').test(code) },
+        { label: 'Dependency Array vorhanden',     check: code => new RegExp('useCallback\\([\\s\\S]*?,\\s*\\[').test(code) },
+        { label: 'setCount noch vorhanden',        check: code => new RegExp('setCount').test(code) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'useMemo für Filterung',
+      description:
+        'Cache die gefilterte Liste mit <code>useMemo</code>. ' +
+        'Die Filterung soll nur neu berechnet werden, wenn sich <code>items</code> oder <code>filter</code> ändert.',
+      filename: 'FilterList.jsx',
+      startCode:
+`import { useState, useMemo } from 'react';
+
+function FilterList({ items }) {
+  const [filter, setFilter] = useState('');
+
+  // Mit useMemo wrappen:
+  const filtered = items.filter(i => i.includes(filter));
+
+  return (
+    <>
+      <input value={filter} onChange={e => setFilter(e.target.value)} />
+      <ul>{filtered.map((i, idx) => <li key={idx}>{i}</li>)}</ul>
+    </>
+  );
+}`,
+      hint: 'const filtered = useMemo(() => items.filter(i => i.includes(filter)), [items, filter]);',
+      tests: [
+        { label: 'useMemo verwendet',          check: code => new RegExp('useMemo').test(code) },
+        { label: 'items in Dependencies',      check: code => new RegExp('\\[.*items.*\\]').test(code) },
+        { label: 'filter in Dependencies',     check: code => new RegExp('\\[.*filter.*\\]').test(code) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'useRef für DOM-Zugriff',
+      description:
+        'Erstelle einen Ref mit <code>useRef</code> und verbinde ihn mit dem Input-Feld. ' +
+        'Beim Klick auf den Button soll <code>inputRef.current.focus()</code> aufgerufen werden.',
+      filename: 'FocusInput.jsx',
+      startCode:
+`import { useRef } from 'react';
+
+function FocusInput() {
+  // Ref erstellen:
+  const inputRef = null;  // useRef(null) verwenden
+
+  function handleClick() {
+    // DOM-Fokus setzen:
+  }
+
+  return (
+    <>
+      <input type="text" />
+      <button onClick={handleClick}>Fokus setzen</button>
+    </>
+  );
+}`,
+      hint: 'const inputRef = useRef(null); dann ref={inputRef} am Input und inputRef.current.focus() im Handler.',
+      tests: [
+        { label: 'useRef(null) verwendet',         check: code => new RegExp('useRef\\(null\\)').test(code) },
+        { label: 'ref={inputRef} am Input',        check: code => new RegExp('ref=\\{inputRef\\}').test(code) },
+        { label: 'inputRef.current.focus()',       check: code => new RegExp('inputRef\\.current\\.focus').test(code) },
+      ],
+    },
+  ],
+};
+
+// ══════════════════════════════════════════════════════
+//  KAPITEL 18 – useEffect & API Calls
+// ══════════════════════════════════════════════════════
+export const labChapter18 = {
+  title: '🧪 Übungslab – useEffect & API Calls',
+  exercises: [
+    {
+      id: 1,
+      title: 'Einmaliger Fetch beim Mount',
+      description:
+        'Lade beim ersten Render eine Liste von Posts von ' +
+        '<code>https://jsonplaceholder.typicode.com/posts?_limit=5</code>. ' +
+        'Verwende das innere async-Funktion-Muster.',
+      filename: 'PostList.jsx',
+      startCode:
+`import { useEffect, useState } from 'react';
+
+function PostList() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    // Hier innere async-Funktion definieren und aufrufen:
+
+
+  }, []);
+
+  return <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>;
+}`,
+      hint: 'async function fetchPosts() { const res = await fetch(url); const data = await res.json(); setPosts(data); } fetchPosts();',
+      tests: [
+        { label: 'useEffect mit leerem Array',    check: code => new RegExp('useEffect\\([\\s\\S]*?,\\s*\\[\\s*\\]').test(code) },
+        { label: 'async-Funktion definiert',      check: code => new RegExp('async\\s+function|const\\s+\\w+\\s*=\\s*async').test(code) },
+        { label: 'fetch() aufgerufen',            check: code => new RegExp('fetch\\(').test(code) },
+        { label: 'setPosts aufgerufen',           check: code => new RegExp('setPosts').test(code) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Loading- und Error-State',
+      description:
+        'Ergänze den Fetch um <code>loading</code>- und <code>error</code>-State. ' +
+        'Zeige "Wird geladen..." während des Fetches und eine Fehlermeldung bei Misserfolg.',
+      filename: 'DataLoader.jsx',
+      startCode:
+`import { useEffect, useState } from 'react';
+
+function DataLoader() {
+  const [data, setData] = useState(null);
+  // loading und error State fehlen:
+
+
+  useEffect(() => {
+    async function load() {
+      const res = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+      const json = await res.json();
+      setData(json);
+    }
+    load();
+  }, []);
+
+  // Loading und Error anzeigen fehlt:
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+}`,
+      hint: 'const [loading, setLoading] = useState(true); const [error, setError] = useState(null); – try/catch/finally verwenden.',
+      tests: [
+        { label: 'loading-State vorhanden',   check: code => new RegExp('loading').test(code) },
+        { label: 'error-State vorhanden',     check: code => new RegExp('error').test(code) },
+        { label: 'try/catch verwendet',       check: code => new RegExp('try\\s*\\{').test(code) && new RegExp('catch').test(code) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Cleanup mit AbortController',
+      description:
+        'Füge einen <code>AbortController</code> zum Fetch hinzu, damit der Request abgebrochen wird, ' +
+        'wenn die Komponente unmountet.',
+      filename: 'AbortFetch.jsx',
+      startCode:
+`import { useEffect, useState } from 'react';
+
+function AbortFetch({ userId }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // AbortController hier erstellen:
+
+    async function fetchUser() {
+      const res = await fetch(
+        \`https://jsonplaceholder.typicode.com/users/\${userId}\`
+        // signal hinzufügen:
+      );
+      const data = await res.json();
+      setUser(data);
+    }
+    fetchUser();
+
+    // Cleanup-Funktion fehlt:
+  }, [userId]);
+
+  return <p>{user?.name ?? 'Lädt...'}</p>;
+}`,
+      hint: 'const controller = new AbortController(); – signal: controller.signal – return () => controller.abort();',
+      tests: [
+        { label: 'AbortController erstellt',      check: code => new RegExp('new AbortController').test(code) },
+        { label: 'signal übergeben',              check: code => new RegExp('controller\\.signal').test(code) },
+        { label: 'abort() in Cleanup',            check: code => new RegExp('controller\\.abort').test(code) },
+        { label: 'Cleanup-Funktion returned',     check: code => new RegExp('return\\s*\\(\\s*\\)\\s*=>').test(code) },
+      ],
+    },
+  ],
+};
+
+// ══════════════════════════════════════════════════════
+//  KAPITEL 19 – React Router
+// ══════════════════════════════════════════════════════
+export const labChapter19 = {
+  title: '🧪 Übungslab – React Router',
+  exercises: [
+    {
+      id: 1,
+      title: 'Routen definieren',
+      description:
+        'Definiere drei Routen mit <code>Routes</code> und <code>Route</code>: ' +
+        '<code>/</code> zeigt <code>HomePage</code>, <code>/about</code> zeigt <code>AboutPage</code>, ' +
+        '<code>*</code> zeigt <code>NotFoundPage</code>.',
+      filename: 'App.jsx',
+      startCode:
+`import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import NotFoundPage from './pages/NotFoundPage';
+
+function App() {
+  return (
+    // Routes und Route hier:
+    <div>
+
+    </div>
+  );
+}`,
+      hint: '<Routes><Route path="/" element={<HomePage />} /><Route path="/about" element={<AboutPage />} /><Route path="*" element={<NotFoundPage />} /></Routes>',
+      tests: [
+        { label: 'Routes-Wrapper vorhanden',   check: code => new RegExp('<Routes').test(code) },
+        { label: 'Route path="/" vorhanden',   check: code => new RegExp('path="/"').test(code) },
+        { label: 'Wildcard *-Route vorhanden', check: code => new RegExp('path="\\*"').test(code) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Link-Navigation',
+      description:
+        'Erstelle eine Navbar mit <code>Link</code>-Komponenten für "/" und "/about". ' +
+        'Verwende keine normalen <code>&lt;a&gt;</code>-Tags.',
+      filename: 'Navbar.jsx',
+      startCode:
+`// Link importieren:
+
+
+function Navbar() {
+  return (
+    <nav>
+      {/* Hier Link-Komponenten verwenden: */}
+    </nav>
+  );
+}`,
+      hint: 'import { Link } from "react-router-dom"; dann <Link to="/">Home</Link>',
+      tests: [
+        { label: 'Link importiert',             check: code => new RegExp('import.*Link.*react-router').test(code) },
+        { label: 'Link to="/" vorhanden',       check: code => new RegExp('to="/"').test(code) },
+        { label: 'Kein <a href> intern',        check: code => !new RegExp('<a\\s+href="/"').test(code) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'useParams und useNavigate',
+      description:
+        'Lese den URL-Parameter <code>:id</code> mit <code>useParams()</code> aus ' +
+        'und füge einen "Zurück"-Button mit <code>useNavigate()</code> hinzu.',
+      filename: 'DetailPage.jsx',
+      startCode:
+`// Hooks importieren:
+
+
+function DetailPage() {
+  // id aus URL lesen:
+  const id = '';
+
+  // navigate-Funktion holen:
+  const navigate = null;
+
+  return (
+    <div>
+      <h1>Detail #{id}</h1>
+      <button onClick={() => {}}>Zurück</button>
+    </div>
+  );
+}`,
+      hint: 'const { id } = useParams(); const navigate = useNavigate(); navigate(-1) im Button.',
+      tests: [
+        { label: 'useParams destructuring',    check: code => new RegExp('const\\s*\\{\\s*id\\s*\\}\\s*=\\s*useParams').test(code) },
+        { label: 'useNavigate verwendet',      check: code => new RegExp('useNavigate').test(code) },
+        { label: 'navigate() aufgerufen',      check: code => new RegExp('navigate\\(').test(code) },
+      ],
+    },
+  ],
+};
+
+// ══════════════════════════════════════════════════════
+//  KAPITEL 20 – React Mini-App
+// ══════════════════════════════════════════════════════
+export const labChapter20 = {
+  title: '🧪 Übungslab – React Mini-App',
+  exercises: [
+    {
+      id: 1,
+      title: 'Item zur Liste hinzufügen (immutable)',
+      description:
+        'Füge ein neues Item zum <code>items</code>-Array-State hinzu, ' +
+        '<strong>ohne</strong> das bestehende Array zu mutieren. Nutze den Spread-Operator.',
+      filename: 'ItemList.jsx',
+      startCode:
+`import { useState } from 'react';
+
+function ItemList() {
+  const [items, setItems] = useState(['Apfel', 'Banane']);
+  const [input, setInput] = useState('');
+
+  function addItem() {
+    // Neues Array erstellen (nicht push!):
+    setItems(/* ? */);
+    setInput('');
+  }
+
+  return (
+    <>
+      <input value={input} onChange={e => setInput(e.target.value)} />
+      <button onClick={addItem}>Hinzufügen</button>
+      <ul>{items.map((item, i) => <li key={i}>{item}</li>)}</ul>
+    </>
+  );
+}`,
+      hint: 'setItems([...items, input]);',
+      tests: [
+        { label: 'Spread-Operator verwendet',   check: code => new RegExp('\\.\\.\\.(items|prev)').test(code) },
+        { label: 'Kein .push() auf State',      check: code => !new RegExp('items\\.push').test(code) },
+        { label: 'setItems aufgerufen',         check: code => new RegExp('setItems').test(code) },
+      ],
+    },
+    {
+      id: 2,
+      title: 'Item aus Liste entfernen',
+      description:
+        'Entferne ein Item aus der Liste mithilfe von <code>.filter()</code>. ' +
+        'Jedes Item soll einen "Löschen"-Button bekommen.',
+      filename: 'DeleteList.jsx',
+      startCode:
+`import { useState } from 'react';
+
+function DeleteList() {
+  const [items, setItems] = useState([
+    { id: 1, text: 'Eintrag 1' },
+    { id: 2, text: 'Eintrag 2' },
+    { id: 3, text: 'Eintrag 3' },
+  ]);
+
+  function deleteItem(id) {
+    // Mit filter() löschen:
+    setItems(/* ? */);
+  }
+
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>
+          {item.text}
+          <button onClick={() => deleteItem(item.id)}>X</button>
+        </li>
+      ))}
+    </ul>
+  );
+}`,
+      hint: 'setItems(items.filter(i => i.id !== id));',
+      tests: [
+        { label: '.filter() verwendet',          check: code => new RegExp('\\.filter\\s*\\(').test(code) },
+        { label: 'Kein .splice() auf State',     check: code => !new RegExp('items\\.splice').test(code) },
+        { label: 'id-Vergleich im Filter',       check: code => new RegExp('i\\.id|item\\.id').test(code) },
+      ],
+    },
+    {
+      id: 3,
+      title: 'Custom Hook useLocalStorage',
+      description:
+        'Schreibe einen Custom Hook <code>useLocalStorage(key, initialValue)</code>, ' +
+        'der einen Wert im localStorage speichert. Er gibt <code>[value, setValue]</code> zurück.',
+      filename: 'useLocalStorage.js',
+      startCode:
+`import { useState } from 'react';
+
+function useLocalStorage(key, initialValue) {
+  // 1. Wert aus localStorage lesen (oder initialValue)
+
+
+  // 2. State initialisieren
+
+
+  // 3. setValue-Funktion, die State UND localStorage aktualisiert
+
+
+  // 4. [value, setValue] zurückgeben
+
+}
+
+export default useLocalStorage;`,
+      hint: 'const stored = localStorage.getItem(key); const [value, setValue] = useState(stored ? JSON.parse(stored) : initialValue);',
+      tests: [
+        { label: 'localStorage.getItem verwendet',  check: code => new RegExp('localStorage\\.getItem').test(code) },
+        { label: 'localStorage.setItem verwendet',  check: code => new RegExp('localStorage\\.setItem').test(code) },
+        { label: 'useState im Custom Hook',          check: code => new RegExp('useState').test(code) },
+        { label: '[value, setValue] returned',       check: code => new RegExp('return\\s*\\[').test(code) },
+      ],
+    },
+  ],
+};

@@ -31,6 +31,16 @@ const SECTIONS = [
       { id: 14, num: '24.5', label: 'React Mini-App ✨' },
     ],
   },
+  {
+    label: 'React II',
+    chapters: [
+      { id: 15, num: '25.1', label: 'Styling Patterns & CSS' },
+      { id: 16, num: '25.2', label: 'React Hooks' },
+      { id: 17, num: '25.3', label: 'useEffect & API' },
+      { id: 18, num: '25.4', label: 'React Router' },
+      { id: 19, num: '25.5', label: 'React Mini-App ✨' },
+    ],
+  },
 ];
 
 /**
@@ -87,7 +97,7 @@ export default function Sidebar({ current, done, totalDone, progressPct, onNavig
       {/* Fortschrittsbalken */}
       <div className="sidebar__progress">
         <p className="sidebar__prog-text">
-          Fortschritt: <strong>{totalDone} / 15</strong>
+          Fortschritt: <strong>{totalDone} / 20</strong>
         </p>
         <div className="sidebar__prog-bar">
           <div
